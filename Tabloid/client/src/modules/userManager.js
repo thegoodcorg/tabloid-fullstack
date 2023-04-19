@@ -6,7 +6,8 @@ const _apiUrl = "/api/userprofile";
 
 export const getUser = (userId) => {
   return getToken().then((token) => {
-    return fetch(`${_apiUrl}/${userId}`, {
+    const fetchUrl = `${_apiUrl}/details/${userId}`;
+    return fetch(fetchUrl, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -41,4 +42,3 @@ export const getAllUsers = () => {
     });
   });
 };
-

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using Tabloid.Models;
 
 namespace Tabloid.Repositories
@@ -9,5 +10,6 @@ namespace Tabloid.Repositories
 
 		void Add(UserProfile userProfile);
 		UserProfile GetByFirebaseUserId(string firebaseUserId);
+		UserProfile GetById(string id);
 	}
 }
