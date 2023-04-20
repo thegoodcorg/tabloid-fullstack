@@ -5,6 +5,10 @@ import Register from "./Register";
 import Hello from "./Hello";
 import UserProfiles from "./UserProfiles";
 import UserDetails from "./UserDetails";
+import PostsDisplay from "./PostsDisplay";
+import TagList from "./TagList";
+import TagForm from "./TagForm";
+
 
 export default function ApplicationViews({ isLoggedIn }) {
   
@@ -19,6 +23,12 @@ export default function ApplicationViews({ isLoggedIn }) {
           />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="post" element={<PostsDisplay />} />
+          <Route path="/tag">
+          <Route index element={<TagList/>} />
+          <Route path="add" element={<TagForm/>} />
+          {/* <Route path=":id" element={<VideoDetails/>} /> */} 
+        </Route>
           <Route path="userprofiles">
             <Route index element={<UserProfiles />} />
             <Route path="details/:id" element={<UserDetails />} />
@@ -30,6 +40,3 @@ export default function ApplicationViews({ isLoggedIn }) {
   );
 }
 
-// ryakushkev4@weibo.comx
-
-// gteanby6@craigslist.orgx
