@@ -71,9 +71,10 @@ namespace Tabloid.Repositories
                                                up.DisplayName, c.Name
                                         FROM POST as p
                                         LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
-                                        LEFT JOIN Category as c ON p.CategoryId = c.Id                    
+                                        LEFT JOIN Category as c ON p.CategoryId = c.Id  
+                                        WHERE p.Id = @id
                     ";
-
+                    cmd.Parameters.AddWithValue("@id", id);
                     var reader = cmd.ExecuteReader();
 
                     Post post = null;
