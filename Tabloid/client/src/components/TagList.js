@@ -28,7 +28,7 @@ const navigate = useNavigate();
             <>
           <Tag tag={tag} key={tag.id} />
           <button className="btn" onClick={() => navigate(`${tag.id}`)}>Edit</button>
-          <button className="deleteBtn" onClick={ ()=> deleteTag(tag.id).then(() => {getTags();})}>Delete</button>
+          <button className="deleteBtn" onClick={ ()=> navigate(`delete/${tag.id}`)}>Delete</button>
           </>
         ))}
       </div>
