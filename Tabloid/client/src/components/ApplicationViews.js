@@ -11,6 +11,7 @@ import TagList from "./TagList";
 import TagForm from "./TagForm";
 import TagEdit from "./TagEdit";
 import TagDelete from "./TagDelete";
+import TagsAndPosts from "./TagsAndPosts";
 
 
 
@@ -39,6 +40,7 @@ export default function ApplicationViews({ isLoggedIn }) {
             <Route path="details/:id" element={<UserDetails />} />
           </Route>
           <Route path="post/:id" element={<PostDetails />} />
+          <Route path="post/:id/ManageTags" element={<TagsAndPosts/>} /> 
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
       </Routes>
