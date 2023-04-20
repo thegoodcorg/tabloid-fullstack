@@ -5,6 +5,7 @@ namespace Tabloid.Repositories
 {
     public interface IPostRepository
     {
+        void AddPost(Post post);
         List<Post> GetAllPosts();
         Post GetPostById(int id);
     }
