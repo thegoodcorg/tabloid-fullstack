@@ -7,6 +7,7 @@ export default function PostsDisplay() {
 
     useEffect(() => {
         getAllPosts().then(p => {
+
             setPosts(p)
         })
     }, [])
@@ -17,6 +18,7 @@ export default function PostsDisplay() {
                 {
                     posts.map((post) => {
                         if (post.isApproved === true && new Date(post.publishDateTime) < Date.now()) {
+
                             return <Post post={post} />
                         }
                     })

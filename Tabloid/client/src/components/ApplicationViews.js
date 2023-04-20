@@ -6,12 +6,13 @@ import Hello from "./Hello";
 import UserProfiles from "./UserProfiles";
 import UserDetails from "./UserDetails";
 import PostsDisplay from "./PostsDisplay";
+import PostDetails from "./PostDetails";
 import TagList from "./TagList";
 import TagForm from "./TagForm";
 
 
 export default function ApplicationViews({ isLoggedIn }) {
-  
+
 
   return (
     <main>
@@ -25,14 +26,15 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="register" element={<Register />} />
           <Route path="post" element={<PostsDisplay />} />
           <Route path="/tag">
-          <Route index element={<TagList/>} />
-          <Route path="add" element={<TagForm/>} />
-          {/* <Route path=":id" element={<VideoDetails/>} /> */} 
-        </Route>
+            <Route index element={<TagList />} />
+            <Route path="add" element={<TagForm />} />
+            {/* <Route path=":id" element={<VideoDetails/>} /> */}
+          </Route>
           <Route path="userprofiles">
             <Route index element={<UserProfiles />} />
             <Route path="details/:id" element={<UserDetails />} />
           </Route>
+          <Route path="post/:id" element={<PostDetails />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
       </Routes>
