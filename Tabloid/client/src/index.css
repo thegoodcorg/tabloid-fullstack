@@ -16,3 +16,18 @@ p {
 .post p {
     white-space: pre-wrap;
 }
+
+.btn {
+  width: 200px;
+  background-color: rgb(182, 176, 176);
+}
+
+.deleteBtn {
+  width: 200px;
+  background-color: rgb(206, 42, 42);
+}
+
+.cancelBtn {
+  width: 200px;
+  background-color: rgb(42, 206, 56);
+}
