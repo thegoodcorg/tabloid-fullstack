@@ -9,6 +9,10 @@ import PostsDisplay from "./PostsDisplay";
 import PostDetails from "./PostDetails";
 import TagList from "./TagList";
 import TagForm from "./TagForm";
+import TagEdit from "./TagEdit";
+import TagDelete from "./TagDelete";
+
+import PostForm from "./PostForm";
 
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -28,13 +32,15 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="/tag">
             <Route index element={<TagList />} />
             <Route path="add" element={<TagForm />} />
-            {/* <Route path=":id" element={<VideoDetails/>} /> */}
+            <Route path=":id" element={<TagEdit />} />
+            <Route path="delete/:id" element={<TagDelete />} />
           </Route>
           <Route path="userprofiles">
             <Route index element={<UserProfiles />} />
             <Route path="details/:id" element={<UserDetails />} />
           </Route>
           <Route path="post/:id" element={<PostDetails />} />
+          <Route path="post/postForm" element={<PostForm />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
       </Routes>
