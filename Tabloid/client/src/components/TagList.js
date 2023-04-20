@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "reactstrap";
-import { getAllTags } from "../modules/tagManager";
+import { deleteTag, getAllTags } from "../modules/tagManager";
 import Tag from "./Tag";
 import TagForm from "./TagForm";
 
@@ -25,7 +25,11 @@ const navigate = useNavigate();
 
       <div className="row justify-content-center">
         {tags.map((tag) => (
+            <>
           <Tag tag={tag} key={tag.id} />
+          <button className="btn" onClick={() => navigate(`${tag.id}`)}>Edit</button>
+          <button className="deleteBtn" onClick={ ()=> navigate(`delete/${tag.id}`)}>Delete</button>
+          </>
         ))}
       </div>
       <Button onClick={() => navigate("add")}> Create a New Tag!</Button>
