@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-import { addTag } from '../modules/tagManager';
+import { updateTag } from '../modules/tagManager';
 
-const TagForm = ({ getTags }) => {
-  const emptyTag = {
+
+const TagEdit = ({ getTags }) => {
+  const tagToEdit = {
     name: '',
   };
 
-  const [tag, setTag] = useState(emptyTag);
+  const [tag, setTag] = useState(tagToEdit);
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getTag(id).then(setTag);
+  }, []);
+
+  if (!tag) {
+    return null;
+  }
 
   const handleInputChange = (evt) => {
     const value = evt.target.value;
@@ -24,7 +34,7 @@ const TagForm = ({ getTags }) => {
   const handleSave = (evt) => {
     evt.preventDefault();
 
-    addTag(tag).then((p) => {
+    updateTag(tag).then((p) => {
         // Navigate the user back to the home route
         navigate("/tag");
     });
@@ -34,14 +44,13 @@ const TagForm = ({ getTags }) => {
     <Form>
       <FormGroup>
         <Label for="name">Name</Label>
-        <Input type="text" name="name" id="name" placeholder="Tag Name"
+        <textarea type="text" name="name" id="name" placeholder="Tag Name"
           value={tag.name}
           onChange={handleInputChange} />
       </FormGroup>
-      <Button className="btn btn-primary" onClick={handleSave}>Submit</Button>
+      <Button className="btn btn-primary" onClick={handleSave}>Save</Button>
     </Form>
   );
 };
 
-export default TagForm;
-
+export default TagEdit;

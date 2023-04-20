@@ -19,3 +19,13 @@ export const getAllTags = () => {
       body: JSON.stringify(tag),
     });
   };
+
+  export const updateTag = (id) => {
+    return fetch(`${_apiUrl}/tag/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(id),
+      });
+  };

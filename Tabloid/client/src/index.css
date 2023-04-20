@@ -16,3 +16,8 @@ p {
 .post p {
     white-space: pre-wrap;
 }
+
+.btn {
+  width: 200px;
+  background-color: rgb(182, 176, 176);
+}

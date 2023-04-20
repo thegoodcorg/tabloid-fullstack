@@ -8,6 +8,7 @@ import UserDetails from "./UserDetails";
 import PostsDisplay from "./PostsDisplay";
 import TagList from "./TagList";
 import TagForm from "./TagForm";
+import TagEdit from "./TagEdit";
 
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -27,7 +28,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="/tag">
           <Route index element={<TagList/>} />
           <Route path="add" element={<TagForm/>} />
-          {/* <Route path=":id" element={<VideoDetails/>} /> */} 
+          <Route path=":tagId" element={<TagEdit/>} /> 
         </Route>
           <Route path="userprofiles">
             <Route index element={<UserProfiles />} />

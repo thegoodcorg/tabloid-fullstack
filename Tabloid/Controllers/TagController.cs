@@ -32,24 +32,27 @@ namespace Tabloid.Controllers
             return CreatedAtAction(nameof(Get), new { id = tag.Id }, tag);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var tag = _tagRepository.GetById(id);
+            if (tag == null)
+            {
+                return NotFound();
+            }
+            return Ok(tag);
+        }
 
-        //[HttpPost]
-        //public IActionResult Post(Tag tag)
-        //{
-        //    var currentUserProfile = GetCurrentUserProfile();
-        //    if (currentUserProfile.UserType.Name != "admin")
-        //    {
-        //        return Unauthorized();
-        //    }
-        //    quote.UserProfileId = currentUserProfile.Id;
-        //    _quoteRepository.Add(quote);
-        //    return CreatedAtAction(nameof(Get), new { id = quote.Id }, quote);
-        //}
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Tag tag)
+        {
+            if (id != tag.Id)
+            {
+                return BadRequest();
+            }
 
-        //private UserProfile GetCurrentUserProfile()
-        //{
-        //    var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        //    return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
-        //}
+            _tagRepository.UpdateTag(tag);
+            return NoContent();
+        }
     }
 }
