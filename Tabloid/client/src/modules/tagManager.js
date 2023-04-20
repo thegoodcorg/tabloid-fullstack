@@ -1,14 +1,17 @@
 const _apiUrl = "/api/tag";
 
+
 export const getAllTags = () => {
     return fetch(_apiUrl)
       .then((res) => res.json())
   };
 
-//   export const addTags = () => {
-//     return fetch(_apiUrl)
-//       .then((res) => res.json())
-//   };
+  export const getTagById = (id) => {
+    return fetch(`${_apiUrl}/${id}`)
+      .then((res) => res.json())
+  };
+
+
   
   export const addTag = (tag) => {
     return fetch(_apiUrl, {
@@ -20,12 +23,12 @@ export const getAllTags = () => {
     });
   };
 
-  export const updateTag = (id) => {
-    return fetch(`${_apiUrl}/tag/${id}`, {
+  export const updateTag = (tag) => {
+    return fetch(`${_apiUrl}/${tag.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(id),
+        body: JSON.stringify(tag),
       });
   };

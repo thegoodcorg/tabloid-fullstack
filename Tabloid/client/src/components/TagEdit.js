@@ -1,25 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-import { updateTag } from '../modules/tagManager';
+import { getTagById, updateTag } from '../modules/tagManager';
 
 
-const TagEdit = ({ getTags }) => {
-  const tagToEdit = {
-    name: '',
-  };
+const TagEdit = () => {
 
-  const [tag, setTag] = useState(tagToEdit);
+  const [tag, setTag] = useState();
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    getTag(id).then(setTag);
+    getTagById(id).then(setTag);
   }, []);
 
-  if (!tag) {
-    return null;
-  }
 
   const handleInputChange = (evt) => {
     const value = evt.target.value;
@@ -40,13 +34,18 @@ const TagEdit = ({ getTags }) => {
     });
   };
 
+  if (!tag) {
+    return null;
+  }
+
   return (
     <Form>
       <FormGroup>
         <Label for="name">Name</Label>
-        <textarea type="text" name="name" id="name" placeholder="Tag Name"
+        <textarea type="text" name="name" id="name" className='form-control'
           value={tag.name}
           onChange={handleInputChange} />
+            
       </FormGroup>
       <Button className="btn btn-primary" onClick={handleSave}>Save</Button>
     </Form>
