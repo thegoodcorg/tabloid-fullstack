@@ -1,8 +1,8 @@
 import { getToken } from "./authManager";
 
-const apiUrl = "/api/Post";
+const apiUrl = "/api/Comment";
 
-export const getAllPosts = () => {
+export const getAllComments = () => {
     return getToken().then((token) => {
         return fetch(apiUrl, {
             method: "GET",
@@ -14,27 +14,26 @@ export const getAllPosts = () => {
                 return resp.json();
             } else {
                 throw new Error(
-                    "An unknown error occurred while trying to get posts.",
+                    "An unknown error occurred while trying to get comments.",
                 );
             }
         });
     });
 };
 
-
-export const getPostById = (id) => {
+export const getPostComments = (postId) => {
     return getToken().then((token) => {
-        return fetch(`${apiUrl}/${id}`, {
+        return fetch(`${apiUrl}/postComments?postId=${postId}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-        }).then((resp) => {
-            if (resp.ok) {
-                return resp.json();
+        }).then((res) => {
+            if (res.ok) {
+                return res.json();
             } else {
                 throw new Error(
-                    "An unknown error occurred while trying to get posts.",
+                    "An unknown error occured while trying to get this posts comments."
                 );
             }
         });
