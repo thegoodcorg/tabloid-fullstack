@@ -48,6 +48,7 @@ const TagEdit = () => {
             
       </FormGroup>
       <Button className="btn btn-primary" onClick={handleSave}>Save</Button>
+      <Button className="btn btn-primary" onClick={() => navigate("/tag")}>Cancel</Button>
     </Form>
   );
 };
