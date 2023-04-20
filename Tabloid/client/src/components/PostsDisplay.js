@@ -20,7 +20,6 @@ export default function PostsDisplay() {
                         if (post.isApproved === true && new Date(post.publishDateTime) < Date.now()) {
 
                             return <Post post={post} />
-
                         }
                     })
                 }
