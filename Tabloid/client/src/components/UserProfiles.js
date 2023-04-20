@@ -16,7 +16,7 @@ const UserProfiles = () => {
       <h1 className="text-center">User List</h1>
       <Card>
         {userProfiles.map((user) => (
-          <CardBody className="border">
+          <CardBody key={user.id} className="border">
             <Link
               style={{ color: "inherit", textDecoration: "none" }}
               to={`/userProfiles/details/${user.id}`}
