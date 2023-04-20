@@ -24,6 +24,7 @@ namespace Tabloid
         {
             //tell csharp about your repos
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+            services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<ITagRepository, TagRepository>();
 
             var firebaseProjectId = Configuration.GetValue<string>("FirebaseProjectId");
