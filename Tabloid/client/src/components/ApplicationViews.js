@@ -27,7 +27,6 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="/tag">
           <Route index element={<TagList/>} />
           <Route path="add" element={<TagForm/>} />
-          {/* <Route path=":id" element={<VideoDetails/>} /> */} 
         </Route>
           <Route path="userprofiles">
             <Route index element={<UserProfiles />} />
