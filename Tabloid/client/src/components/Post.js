@@ -4,7 +4,7 @@ import { Card, CardBody } from "reactstrap";
 
 export default function Post({ post }) {
     return (
-        <Card className="m-4">
+        <Card key={post.id} className="m-4">
             <CardBody>
                 <Link to={`/post/${post.id}`} >
                     <strong>{post.title}</strong>
