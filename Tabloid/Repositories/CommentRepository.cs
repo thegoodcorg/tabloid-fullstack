@@ -82,13 +82,18 @@ namespace Tabloid.Repositories
                     List<Comment> postComments = new List<Comment>();
                     cmd.CommandText = @"
                                         SELECT 
-                                            Id, 
-                                            PostId, 
-                                            UserProfileId, 
-                                            Subject, 
-                                            Content, 
-                                            CreateDateTime 
-                                        FROM Comment
+                                            c.Id, 
+                                            c.PostId, 
+                                            c.UserProfileId, 
+                                            c.Subject, 
+                                            c.Content, 
+                                            c.CreateDateTime,
+                                            up.displayName,
+                                            up.FirstName,
+                                            up.LastName,
+                                            up.Email
+                                        FROM Comment c
+                                        LEFT JOIN userprofile up on up.id = c.UserProfileId 
                                         WHERE PostId = @postId";
                     DbUtils.AddParameter(cmd, "@postId", postId);
                     var reader = cmd.ExecuteReader();
@@ -102,7 +107,14 @@ namespace Tabloid.Repositories
                             UserProfileId = DbUtils.GetInt(reader, "UserProfileId"),
                             Subject = DbUtils.GetString(reader, "Subject"),
                             Content = DbUtils.GetString(reader, "Content"),
-                            CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime")
+                            CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                            Profile = new UserProfile()
+                            {
+                                FirstName = DbUtils.GetString(reader,"FirstName"),
+                                LastName = DbUtils.GetString(reader, "LastName"),
+                                Email = DbUtils.GetString(reader,"Email"),
+                                DisplayName = DbUtils.GetString(reader, "DisplayName")
+                            }
                         };
                         postComments.Add(comment);
                     }
