@@ -5,11 +5,19 @@ import { getPostById } from "../modules/postManager";
 import { Button, Card, CardBody } from "reactstrap";
 import { Link } from "react-router-dom";
 import { PostComments } from "./PostComments";
+import { CommentForm } from "./CommentForm";
+import { getPostComments } from "../modules/commentManager";
 
 export default function PostDetails() {
     const [post, setPost] = useState({});
+    const [commentsOnPost, setCommentsOnPost] = useState([])
+
     const { id } = useParams();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        getComments()
+    }, [])
 
     useEffect(() => {
         getPostById(id).then((p) => {
@@ -17,6 +25,12 @@ export default function PostDetails() {
         })
 
     }, [])
+
+    const getComments = () => {
+        getPostComments(id).then(c => {
+            setCommentsOnPost(c)
+        })
+    }
 
     return (
         <div>
@@ -27,6 +41,9 @@ export default function PostDetails() {
                     <p> Posted by: {post.userProfile?.displayName}</p>
                     <p>{post.content}</p>
                     <p> Posted On: {post.publishDateTime}</p>
+                    <CommentForm getComments={getComments} />
+                    <PostComments commentsOnPost={commentsOnPost} />
+
                     <PostComments postId={id}/>
                     
                     <Button onClick={()=>navigate("ManageTags")}>Manage Tags</Button>
