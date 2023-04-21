@@ -49,6 +49,12 @@ namespace Tabloid.Controllers
 
             return CreatedAtAction("Get", new { id = post.Id }, post);
         }
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _postRepository.DeletePost(id);
+            return Ok();
+        }
 
         private UserProfile GetCurrentUserProfile()
         {

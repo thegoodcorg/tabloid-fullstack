@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, CardBody } from "reactstrap";
+import { Card, CardBody, CardSubtitle, CardTitle } from "reactstrap";
 import { CommentPreview } from "./CommentPreview";
 
 export default function Post({ post }) {
@@ -8,13 +8,10 @@ export default function Post({ post }) {
         <Card key={post.id} className="m-4">
             <CardBody>
                 <Link to={`/post/${post.id}`} >
-                    <strong>{post.title}</strong>
+                    <CardTitle tag='h5'>{post.title}</CardTitle>
                 </Link>
-                <p> Posted by: {post.userProfile?.displayName}</p>
-                <p> Category: {post.category?.name}</p>
-                <strong>{post.title}</strong>
-                <p> Posted by: {post.userProfile.displayName}</p>
-                <p> Category: {post.category.name}</p>
+                <CardSubtitle className="mb-2 text-muted"> Posted by: {post.userProfile?.displayName}</CardSubtitle>
+                <CardSubtitle className="mb-2 text-muted"> Category: {post.category?.name}</CardSubtitle>
                 <CommentPreview postId={post.id} />
 
             </CardBody>
