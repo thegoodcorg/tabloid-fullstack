@@ -21,7 +21,6 @@ export const getAllPosts = () => {
     });
 };
 
-
 export const getPostById = (id) => {
     return getToken().then((token) => {
         return fetch(`${apiUrl}/${id}`, {
@@ -83,3 +82,24 @@ export const deletePost = (id) => {
         });
     });
 };
+
+export const editPost = (post) => {
+    return getToken().then((token) => {
+        return fetch(`${apiUrl}/${post.id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(post),
+        }).then((resp) => {
+            if (resp.ok) {
+                return resp;
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to update a post.",
+                );
+            }
+        });
+    });
+}

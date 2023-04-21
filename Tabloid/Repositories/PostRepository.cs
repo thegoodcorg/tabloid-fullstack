@@ -68,7 +68,7 @@ namespace Tabloid.Repositories
                 {
                     cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,  
                                                      PublishDateTime, CategoryId, UserProfileId, IsApproved,  
-                                               up.DisplayName, c.Name
+                                               up.DisplayName, up.FirstName, up.LastName, up.Email, c.Name
                                         FROM POST as p
                                         LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
                                         LEFT JOIN Category as c ON p.CategoryId = c.Id  
@@ -93,7 +93,10 @@ namespace Tabloid.Repositories
                             IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
                             UserProfile = new UserProfile()
                             {
-                                DisplayName = DbUtils.GetString(reader, "DisplayName")
+                                DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                                FirstName = DbUtils.GetString(reader, "FirstName"),
+                                LastName = DbUtils.GetString(reader, "LastName"),
+                                Email = DbUtils.GetString(reader, "Email")
                             },
                             Category = new Category()
                             {
@@ -129,6 +132,39 @@ namespace Tabloid.Repositories
                     DbUtils.AddParameter(cmd, "@userProfileId", post.UserProfileId);
 
                     post.Id = (int)cmd.ExecuteScalar();
+
+
+                }
+            }
+        }
+
+
+        public void EditPost(Post post)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Post 
+                                        SET Title = @title,
+                                            Content = @content,
+                                            ImageLocation = @imageLocation, 
+                                            PublishDateTime = @publishDateTime,                                           
+                                            CategoryId = @categoryId   
+                                         WHERE Id = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", post.Id);
+                    DbUtils.AddParameter(cmd, "@title", post.Title);
+                    DbUtils.AddParameter(cmd, "@content", post.Content);
+                    DbUtils.AddParameter(cmd, "@imageLocation", post.ImageLocation);
+                    //DbUtils.AddParameter(cmd, "@createDateTime", post.CreateDateTime);
+                    DbUtils.AddParameter(cmd, "@publishDateTime", post.PublishDateTime);
+                    //DbUtils.AddParameter(cmd, "@isApproved", post.IsApproved);
+                    DbUtils.AddParameter(cmd, "@categoryId", post.CategoryId);
+                    //DbUtils.AddParameter(cmd, "@userProfileId", post.UserProfileId);
+
+                    cmd.ExecuteNonQuery();
 
 
                 }
