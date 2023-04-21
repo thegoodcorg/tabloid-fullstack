@@ -18,6 +18,8 @@ const PostForm = () => {
 
     return (
         <Form>
+            <h3>New Post</h3>
+
             <FormGroup>
                 <strong for="title">Title</strong>
                 <Input type="text" name="title" id="title" placeholder=""

@@ -42,7 +42,7 @@ export default function PostDetails() {
                     }}>Cancel</Button>
                     <Button className="btn btn-danger m-4" onClick={() => {
                         deletePost(id);
-                        navigate(-1);
+                        navigate(`/post`);
                     }} >Delete</Button>
                 </ModalFooter>
             </Modal>

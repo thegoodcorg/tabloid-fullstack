@@ -13,6 +13,7 @@ import TagEdit from "./TagEdit";
 import TagDelete from "./TagDelete";
 
 import PostForm from "./PostForm";
+import PostEdit from "./PostEdit";
 
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -41,6 +42,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           </Route>
           <Route path="post/:id" element={<PostDetails />} />
           <Route path="post/postForm" element={<PostForm />} />
+          <Route path="post/Edit/:id" element={<PostEdit />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
       </Routes>
