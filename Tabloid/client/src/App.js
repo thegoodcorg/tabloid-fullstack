@@ -8,6 +8,9 @@ import { onLoginStatusChange, me } from "./modules/authManager";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
+  const isActiveUser = userProfile
+    ? (userProfile.activeStatus === "Active") && isLoggedIn
+    : false;
 
   useEffect(() => {
     onLoginStatusChange(setIsLoggedIn);
@@ -27,7 +30,7 @@ function App() {
 
   return (
     <Router>
-      <Header isLoggedIn={isLoggedIn} userProfile={userProfile} />
+      <Header isLoggedIn={isActiveUser} userProfile={userProfile} />
       <ApplicationViews isLoggedIn={isLoggedIn} />
     </Router>
   );
