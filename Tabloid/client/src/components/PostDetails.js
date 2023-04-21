@@ -41,14 +41,16 @@ export default function PostDetails() {
                     <p> Posted by: {post.userProfile?.displayName}</p>
                     <p>{post.content}</p>
                     <p> Posted On: {post.publishDateTime}</p>
-                    <CommentForm getComments={getComments} />
-                    <PostComments commentsOnPost={commentsOnPost} />
                         <p>{post.tags?.map(tag => {
                             return <li key={tag.id}>{tag.name} </li>;            
-                            }
-                        )}</p>
+                            })}
+                        </p>
+                            <div>
+                            <Button onClick={()=> navigate("ManageTags")}>Manage Tags</Button>
+                            </div>
+                    <CommentForm getComments={getComments} />
                     
-                    <Button onClick={()=> navigate("ManageTags")}>Manage Tags</Button>
+                    <PostComments commentsOnPost={commentsOnPost} />
 
                 </CardBody>
             </Card>
@@ -57,8 +59,3 @@ export default function PostDetails() {
 }
 
 
-//note to future Shane , add functionally to manage tags button 
-
-{/* <p>{post.tags.map(tag => {
-                        return <span key={tag.id}>{tag.name} </span>;
-                    })}</p> */}
