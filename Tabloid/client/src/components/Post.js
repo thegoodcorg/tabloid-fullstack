@@ -1,9 +1,22 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Card, CardBody, CardSubtitle, CardTitle } from "reactstrap";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Card, CardBody, CardSubtitle, CardTitle, Button } from "reactstrap";
 import { CommentPreview } from "./CommentPreview";
 
+
+
 export default function Post({ post }) {
+
+    // const [postDetails, setPostDetails] = useState({
+    //     Title: post.Title,
+    //     Content: post.Content,
+    //     CategoryId: post.CategoryId,
+    //     ImageLocation: post.ImageLocation,
+    //     PublishDateTime: post.PublishDateTime
+    // });
+
+    const navigate = useNavigate();
+
     return (
         <Card key={post.id} className="m-4">
             <CardBody>
@@ -15,6 +28,7 @@ export default function Post({ post }) {
                 <CommentPreview postId={post.id} />
 
             </CardBody>
+            <Button className="m-4" onClick={() => navigate(`Edit/${post.id}`)}>Edit Post</Button>
         </Card>
     );
 }
