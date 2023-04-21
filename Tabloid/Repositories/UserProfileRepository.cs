@@ -20,7 +20,7 @@ namespace Tabloid.Repositories
 				{
 					cmd.CommandText = @"
 							SELECT up.Id, up.FirebaseUserId, up.FirstName, up.LastName, up.DisplayName, 
-                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId,
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.ActiveStatus,
                                ut.Name AS UserTypeName
 							FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
@@ -40,6 +40,7 @@ namespace Tabloid.Repositories
 								Email = DbUtils.GetString(reader, "Email"),
 								CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
 								ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
+								ActiveStatus = DbUtils.GetString(reader, "ActiveStatus"),
 								UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
 								UserType = new UserType()
 								{
@@ -171,6 +172,20 @@ namespace Tabloid.Repositories
 					DbUtils.AddParameter(cmd, "@UserTypeId", userProfile.UserTypeId);
 
 					userProfile.Id = (int)cmd.ExecuteScalar();
+				}
+			}
+		}
+
+		public void DeactivateUser(string userId)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"UPDATE UserProfile SET ActiveStatus = 'Deactivated' WHERE Id = @UserId";
+					DbUtils.AddParameter(cmd, "@UserId", userId);
+					cmd.ExecuteNonQuery();
 				}
 			}
 		}

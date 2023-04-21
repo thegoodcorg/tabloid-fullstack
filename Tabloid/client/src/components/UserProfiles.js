@@ -10,12 +10,18 @@ const UserProfiles = () => {
     });
   }, []);
 
+  const resetUsers = () => {
+    getAllUsers().then((users) => {
+      setUserProfiles(users);
+    });
+  };
+
   return (
     <>
       <h1 className="text-center">User List</h1>
 
       {userProfiles.map((user) => (
-        <UserProfileCard key={user.id} user={user} />
+        <UserProfileCard key={user.id} user={user} resetUsers={resetUsers} />
       ))}
     </>
   );

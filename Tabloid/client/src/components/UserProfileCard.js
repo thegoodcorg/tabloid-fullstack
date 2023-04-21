@@ -1,13 +1,21 @@
-import { useState } from "react";
-import { Button, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { useEffect, useState } from "react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import { Link } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap/dist/css/bootstrap.css";
+import { deactivateUser, getAllUsers } from "../modules/userManager";
 
 const DeleteModal = ({ show, onHide, onConfirm }) => {
   return (
     <Modal isOpen={show} toggle={onHide}>
-      <ModalHeader>
-      </ModalHeader>
+      <ModalHeader></ModalHeader>
       <ModalBody>
         Are you sure you want to deactivate this user profile?
       </ModalBody>
@@ -23,21 +31,21 @@ const DeleteModal = ({ show, onHide, onConfirm }) => {
   );
 };
 
-const UserProfileCard = ({ user }) => {
+const UserProfileCard = ({ user, resetUsers }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleDeactivateClick = () => {
     setShowConfirmation(!showConfirmation);
   };
 
-  const handleConfirmDeactivate = () => {
+  const handleConfirmDeactivate = (userId) => {
+    deactivateUser(userId).then(() => resetUsers());
     setShowConfirmation(false);
   };
 
   const handleHideConfirmation = () => {
     setShowConfirmation(false);
   };
-
 
   return (
     <Card className="mt-1">
@@ -52,16 +60,14 @@ const UserProfileCard = ({ user }) => {
           {user.firstName} {user.lastName}
         </div>
         <div>{user.userType.name}</div>
-        <Button
-          className="btn btn-danger mt-3"
-          onClick={handleDeactivateClick}
-        >
+        <div>{user.activeStatus}</div>
+        <Button className="btn btn-danger mt-3" onClick={handleDeactivateClick}>
           Deactivate User
         </Button>
         <DeleteModal
           show={showConfirmation}
           onHide={handleHideConfirmation}
-          onConfirm={handleConfirmDeactivate}
+          onConfirm={() => handleConfirmDeactivate(user.id)}
         />
       </CardBody>
     </Card>
