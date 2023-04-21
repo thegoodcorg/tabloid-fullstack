@@ -63,3 +63,23 @@ export const addPost = (post) => {
         });
     });
 };
+export const deletePost = (id) => {
+    return getToken().then((token) => {
+        return fetch(`${apiUrl}/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }).then((resp) => {
+            if (resp.ok) {
+                return resp;
+            } else if (resp.status === 401) {
+                throw new Error("Unauthorized");
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to save a new post.",
+                );
+            }
+        });
+    });
+};

@@ -62,3 +62,13 @@ export const addComment = (comment) => {
         });
     });
 } 
+
+export const deleteComment = (id) => {
+    return fetch(`${apiUrl}/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(id),
+      });
+    };
