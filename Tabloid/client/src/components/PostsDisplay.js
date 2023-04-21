@@ -18,7 +18,7 @@ export default function PostsDisplay() {
     return (
         <>
             <section>
-                <Button onClick={() => navigate("postForm")}>New Post</Button>
+                <Button className="m-4" onClick={() => navigate("postForm")}>New Post</Button>
                 {
                     posts.map((post) => {
                         if (post.isApproved === true && new Date(post.publishDateTime) < Date.now()) {

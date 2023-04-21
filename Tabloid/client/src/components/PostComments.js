@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardBody } from "reactstrap";
+import { Card, CardBody, CardTitle } from "reactstrap";
 import { getPostComments } from "../modules/commentManager";
 
 export const PostComments = ({ postId }) => {
@@ -10,17 +10,15 @@ export const PostComments = ({ postId }) => {
             setCommentsOnPost(c)
         })
     }, [])
-    // let htmlString = ""
-    // for (const comment of commentsOnPost) {
-    //     htmlString += `<li key=${comment.id}>${comment.content}</li>`
 
-    // }
-    // return <ul>{htmlString}</ul>
-
-    return <> Comments {commentsOnPost.map(comment => {
-        return <li key={comment.id}>
-            {comment.content}
-        </li>
-    })}
+    return <>
+        <CardTitle tag='h5'>Comments</CardTitle>
+        {
+            commentsOnPost.map(comment => {
+                return <li key={comment.id}>
+                    {comment.content}
+                </li>
+            })
+        }
     </>
 }
