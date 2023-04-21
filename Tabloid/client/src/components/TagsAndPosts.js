@@ -29,7 +29,7 @@ const navigate = useNavigate();
         {tags.map((tag) => (
             <>
           <Tag tag={tag} key={tag.id} />
-          <Button className="btn" onClick={() => addPostTag(postTag).then(()=> navigate("/post"))}>Add Tag To Post</Button>
+          <Button className="btn" onClick={() => addPostTag(postTag.id).then(()=> navigate("/post"))}>Add Tag To Post</Button>
           </>
         ))}
       </div>

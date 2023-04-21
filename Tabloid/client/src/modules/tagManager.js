@@ -1,3 +1,5 @@
+// import { getToken } from "./authManager";
+
 const _apiUrl = "/api/tag";
 
 
@@ -42,3 +44,22 @@ export const getAllTags = () => {
         body: JSON.stringify(id),
       });
   };
+
+//   export const getPostTags = (postId) => {
+//     return getToken().then((token) => {
+//         return fetch(`${_apiUrl}/postTags?postId=${postId}`, {
+//             method: "GET",
+//             headers: {
+//                 Authorization: `Bearer ${token}`,
+//             },
+//         }).then((res) => {
+//             if (res.ok) {
+//                 return res.json();
+//             } else {
+//                 throw new Error(
+//                     "An unknown error occured while trying to get this posts comments."
+//                 );
+//             }
+//         });
+//     });
+// };

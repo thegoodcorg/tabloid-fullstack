@@ -43,6 +43,10 @@ export default function PostDetails() {
                     <p> Posted On: {post.publishDateTime}</p>
                     <CommentForm getComments={getComments} />
                     <PostComments commentsOnPost={commentsOnPost} />
+                        <p>{post.tags?.map(tag => {
+                            return <li key={tag.id}>{tag.name} </li>;            
+                            }
+                        )}</p>
                     
                     <Button onClick={()=> navigate("ManageTags")}>Manage Tags</Button>
 
@@ -54,3 +58,7 @@ export default function PostDetails() {
 
 
 //note to future Shane , add functionally to manage tags button 
+
+{/* <p>{post.tags.map(tag => {
+                        return <span key={tag.id}>{tag.name} </span>;
+                    })}</p> */}
