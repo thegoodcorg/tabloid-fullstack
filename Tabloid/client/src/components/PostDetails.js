@@ -49,34 +49,6 @@ export default function PostDetails() {
         )
     }
 
-    // const DeleteModal = ({ show, onHide, onConfirm }) => {
-    //     return (
-    //         <Modal isOpen={show} toggle={onHide}>
-    //             <ModalHeader></ModalHeader>
-    //             <ModalBody>
-    //                 Are you sure you want to deactivate this user profile?
-    //             </ModalBody>
-    //             <ModalFooter>
-    //                 <Button variant="secondary" onClick={onHide}>
-    //                     Cancel
-    //                 </Button>
-    //                 <Button variant="primary" onClick={onConfirm}>
-    //                     Deactivate
-    //                 </Button>
-    //             </ModalFooter>
-    //         </Modal>
-    //     );
-    // };
-    //     <Button onClick={handleDeactivateClick}>
-    //     Deactivate User
-    //   </Button>
-    //   <DeleteModal
-    //     show={showConfirmation}
-    //     onHide={handleHideConfirmation}
-    //     onConfirm={() => handleConfirmDeactivate(user.id)}
-    //   />
-
-
     return (
         <div>
 
