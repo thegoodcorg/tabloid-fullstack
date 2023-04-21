@@ -57,7 +57,7 @@ namespace Tabloid.Controllers
 			return CreatedAtAction(
 				nameof(GetUserProfile),
 				new { firebaseUserId = userProfile.FirebaseUserId },
-				userProfile);
+				userProfile); 
 		}
 
 		[HttpGet("Me")]
