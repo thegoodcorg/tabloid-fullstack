@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { Form } from "reactstrap";
-import { me } from "../modules/authManager";
+import { Button } from "reactstrap";
+import { addComment } from "../modules/commentManager";
+import { useNavigate, useParams } from "react-router-dom";
 
-export const CommentForm = () => {
-    const [commentContent, setCommentContent] = useState("")
 
-    const userProfile = me()
-    console.log(userProfile)
-    const handleSaveClick = (event) => {
-        event.preventDefault()
+export const CommentForm = ( { getComments } ) => {
+    const [commentContent, setCommentContent] = useState({})
 
-    }
+    let postId = useParams("id")["id"]
+
+    const navigate = useNavigate();
     return <>
         <input
+            value={commentContent.content}
             type="field"
             placeholder="Leave a Comment!"
             onChange={(e) => {
@@ -22,9 +22,19 @@ export const CommentForm = () => {
             }}>
 
         </input>
-        <button onClick={(e) => {
-            handleSaveClick(e)
-        }}>Submit.</button>
+        <Button className="btn btn-primary" onClick={() => {
+            const copy = { ...commentContent }
+            copy.postId = postId
+            console.log(copy)
+            addComment(copy).then((returnedComment) => {
+                console.log(returnedComment)
+                // navigate(`/post/${returnedComment.postId}`)
+                getComments()
+                setCommentContent({content:""})
+            })
+
+        }}>Submit</Button>
         <br />
     </>
 }
+

@@ -4,14 +4,14 @@ import { getPostComments } from "../modules/commentManager";
 
 
 
-export const PostComments = ({ postId }) => {
-    const [commentsOnPost, setCommentsOnPost] = useState([])
+export const PostComments = ({ commentsOnPost }) => {
+    // const [commentsOnPost, setCommentsOnPost] = useState([])
 
-    useEffect(() => {
-        getPostComments(postId).then(c => {
-            setCommentsOnPost(c)
-        })
-    }, [])
+    // useEffect(() => {
+    //     getPostComments(postId).then(c => {
+    //         setCommentsOnPost(c)
+    //     })
+    // }, [])
 
     return <> Comments {commentsOnPost.map(comment => {
         return <li key={comment.id}>
