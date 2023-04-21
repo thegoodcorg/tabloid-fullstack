@@ -78,6 +78,13 @@ namespace Tabloid.Controllers
 			return Ok();
 		}
 
+		[HttpPatch("reactivate/{userId}")]
+		public IActionResult ReactiveUser(string userId)
+		{
+			_userProfileRepository.ReactivateUser(userId);
+			return Ok();
+		}
+
 		private UserProfile GetCurrentUserProfile()
 		{
 			var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

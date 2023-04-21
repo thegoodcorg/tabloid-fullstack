@@ -9,7 +9,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const isActiveUser = userProfile
-    ? (userProfile.activeStatus === "Active") && isLoggedIn
+    ? userProfile.activeStatus === "Active" && isLoggedIn
     : false;
 
   useEffect(() => {
@@ -24,13 +24,19 @@ function App() {
     }
   }, [isLoggedIn]);
 
+  // useEffect(() => {
+  //   if (userProfile?.activeStatus !== "Active") {
+  //     setIsLoggedIn(false);
+  //   }
+  // }, [userProfile]);
+
   if (isLoggedIn === null) {
     return <Spinner className="app-spinner dark" />;
   }
 
   return (
     <Router>
-      <Header isLoggedIn={isActiveUser} userProfile={userProfile} />
+      <Header isLoggedIn={isLoggedIn} userProfile={userProfile} />
       <ApplicationViews isLoggedIn={isLoggedIn} />
     </Router>
   );
