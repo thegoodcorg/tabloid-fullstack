@@ -13,10 +13,9 @@ namespace Tabloid.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly IUserProfileRepository _userProfileRepository;
-        public PostController(IPostRepository postRepository, IUserProfileRepository userProfileRepository)
         private readonly ITagRepository _tagRepository;
 
-        public PostController(IPostRepository postRepository, ITagRepository tagRepository)
+        public PostController(IPostRepository postRepository, ITagRepository tagRepository, IUserProfileRepository userProfileRepository)
         {
             _postRepository = postRepository;
             _tagRepository = tagRepository;
