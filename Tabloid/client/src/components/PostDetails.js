@@ -41,7 +41,7 @@ export default function PostDetails() {
                     <p>{post.content}</p>
                     <p> Posted On: {post.publishDateTime}</p>
                     <CommentForm getComments={getComments} />
-                    <PostComments commentsOnPost={commentsOnPost} />
+                    <PostComments commentsOnPost={commentsOnPost} getComments={getComments}/>
 
                 </CardBody>
             </Card>
