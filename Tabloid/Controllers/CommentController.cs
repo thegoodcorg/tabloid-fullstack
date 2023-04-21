@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Security.Claims;
+using Tabloid.Models;
 using Tabloid.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,10 +13,21 @@ namespace Tabloid.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
+        private readonly IPostRepository _postRepository;
 
-        public CommentController(ICommentRepository commentRepository)
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Console.WriteLine(firebaseUserId);
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+        }
+
+        public CommentController(ICommentRepository commentRepository, IUserProfileRepository userRepository)
         {
             _commentRepository = commentRepository;
+            _userProfileRepository = userRepository;
         }
         // GET: api/<CommentController>
         [HttpGet]
@@ -24,10 +38,11 @@ namespace Tabloid.Controllers
 
         // GET api/<CommentController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            return Ok();
         }
+
         [HttpGet("postComments")]
         public IActionResult GetCommentsByPostId(int postId)
         {
@@ -36,8 +51,17 @@ namespace Tabloid.Controllers
 
         // POST api/<CommentController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(Comment comment)
         {
+            var currentUser = GetCurrentUserProfile();
+            comment.UserProfileId = currentUser.Id;
+            comment.CreateDateTime = DateTime.Now;
+            comment.Subject = "testing";
+
+            _commentRepository.AddComment(comment);
+            return Ok(comment);
+
+            //   return CreatedAtAction("Get", new { id = comment.PostId }, comment);
         }
 
         // PUT api/<CommentController>/5
