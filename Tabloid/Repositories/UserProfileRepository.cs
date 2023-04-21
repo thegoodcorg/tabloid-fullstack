@@ -159,10 +159,10 @@ namespace Tabloid.Repositories
 				using (var cmd = conn.CreateCommand())
 				{
 					cmd.CommandText = @"INSERT INTO UserProfile (FirebaseUserId, FirstName, LastName, DisplayName, 
-                                                                 Email, CreateDateTime, ImageLocation, UserTypeId)
+                                                                 Email, CreateDateTime, ImageLocation, UserTypeId, ActiveStatus)
                                         OUTPUT INSERTED.ID
                                         VALUES (@FirebaseUserId, @FirstName, @LastName, @DisplayName, 
-                                                @Email, @CreateDateTime, @ImageLocation, @UserTypeId)";
+                                                @Email, @CreateDateTime, @ImageLocation, @UserTypeId, @ActiveStatus)";
 					DbUtils.AddParameter(cmd, "@FirebaseUserId", userProfile.FirebaseUserId);
 					DbUtils.AddParameter(cmd, "@FirstName", userProfile.FirstName);
 					DbUtils.AddParameter(cmd, "@LastName", userProfile.LastName);
@@ -171,6 +171,7 @@ namespace Tabloid.Repositories
 					DbUtils.AddParameter(cmd, "@CreateDateTime", userProfile.CreateDateTime);
 					DbUtils.AddParameter(cmd, "@ImageLocation", userProfile.ImageLocation);
 					DbUtils.AddParameter(cmd, "@UserTypeId", userProfile.UserTypeId);
+					DbUtils.AddParameter(cmd, "@ActiveStatus", userProfile.ActiveStatus);
 
 					userProfile.Id = (int)cmd.ExecuteScalar();
 				}

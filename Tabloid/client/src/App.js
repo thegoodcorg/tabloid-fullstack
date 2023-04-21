@@ -24,11 +24,13 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  // useEffect(() => {
-  //   if (userProfile?.activeStatus !== "Active") {
-  //     setIsLoggedIn(false);
-  //   }
-  // }, [userProfile]);
+  useEffect(() => {
+    if (userProfile) {
+      if (userProfile.activeStatus === "Deactivated") {
+        setIsLoggedIn(false);
+      }
+    }
+  }, [userProfile]);
 
   if (isLoggedIn === null) {
     return <Spinner className="app-spinner dark" />;
