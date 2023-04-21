@@ -42,3 +42,25 @@ export const getAllUsers = () => {
     });
   });
 };
+
+export const deactivateUser = (userId) => {
+  return getToken().then((token) => {
+    let fetchUrl = `${_apiUrl}/deactivate/${userId}`
+    return fetch(fetchUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({}),
+    }).then((res) => {
+      if (res.ok) {
+        return res;
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to deactivate the user."
+        );
+      }
+    });
+  });
+};
