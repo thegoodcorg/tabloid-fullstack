@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Card,
@@ -10,9 +10,9 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
-import { deactivateUser, getAllUsers } from "../modules/userManager";
+import { deactivateUser, reactivateUser } from "../modules/userManager";
 
-const DeleteModal = ({ show, onHide, onConfirm }) => {
+const DeactivateModal = ({ show, onHide, onConfirm }) => {
   return (
     <Modal isOpen={show} toggle={onHide}>
       <ModalHeader></ModalHeader>
@@ -20,31 +20,31 @@ const DeleteModal = ({ show, onHide, onConfirm }) => {
         Are you sure you want to deactivate this user profile?
       </ModalBody>
       <ModalFooter>
-        <Button variant="secondary" onClick={onHide}>
-          Cancel
-        </Button>
-        <Button variant="primary" onClick={onConfirm}>
-          Deactivate
-        </Button>
+        <Button onClick={onHide}>Cancel</Button>
+        <Button onClick={onConfirm}>Deactivate</Button>
       </ModalFooter>
     </Modal>
   );
 };
 
 const UserProfileCard = ({ user, resetUsers }) => {
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showConfirmation, setShowDeactivateConfirmation] = useState(false);
 
   const handleDeactivateClick = () => {
-    setShowConfirmation(!showConfirmation);
+    setShowDeactivateConfirmation(!showConfirmation);
   };
 
   const handleConfirmDeactivate = (userId) => {
     deactivateUser(userId).then(() => resetUsers());
-    setShowConfirmation(false);
+    setShowDeactivateConfirmation(false);
   };
 
   const handleHideConfirmation = () => {
-    setShowConfirmation(false);
+    setShowDeactivateConfirmation(false);
+  };
+
+  const handleReactivateClick = (userId) => {
+    reactivateUser(userId).then(() => resetUsers());
   };
 
   return (
@@ -61,10 +61,23 @@ const UserProfileCard = ({ user, resetUsers }) => {
         </div>
         <div>{user.userType.name}</div>
         <div>{user.activeStatus}</div>
-        <Button className="btn btn-danger mt-3" onClick={handleDeactivateClick}>
-          Deactivate User
-        </Button>
-        <DeleteModal
+        {user.activeStatus === "Active" ? (
+          <Button
+            className="btn btn-danger mt-3"
+            onClick={handleDeactivateClick}
+          >
+            Deactivate User
+          </Button>
+        ) : (
+          <Button
+            className="btn btn-success mt-3"
+            onClick={() => handleReactivateClick(user.id)}
+          >
+            Reactivate user
+          </Button>
+        )}
+
+        <DeactivateModal
           show={showConfirmation}
           onHide={handleHideConfirmation}
           onConfirm={() => handleConfirmDeactivate(user.id)}

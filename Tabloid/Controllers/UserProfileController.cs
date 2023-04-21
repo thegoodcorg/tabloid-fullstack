@@ -52,11 +52,12 @@ namespace Tabloid.Controllers
 		{
 			userProfile.CreateDateTime = DateTime.Now;
 			userProfile.UserTypeId = UserType.AUTHOR_ID;
+			userProfile.ActiveStatus = "Active";
 			_userProfileRepository.Add(userProfile);
 			return CreatedAtAction(
 				nameof(GetUserProfile),
 				new { firebaseUserId = userProfile.FirebaseUserId },
-				userProfile);
+				userProfile); 
 		}
 
 		[HttpGet("Me")]
@@ -75,6 +76,13 @@ namespace Tabloid.Controllers
 		public IActionResult DeactivateUser(string userId)
 		{
 			_userProfileRepository.DeactivateUser(userId);
+			return Ok();
+		}
+
+		[HttpPatch("reactivate/{userId}")]
+		public IActionResult ReactiveUser(string userId)
+		{
+			_userProfileRepository.ReactivateUser(userId);
 			return Ok();
 		}
 
