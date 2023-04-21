@@ -63,10 +63,11 @@ namespace Tabloid.Repositories
                     }
                     if (!reader.IsDBNull(reader.GetOrdinal("TagName")))
                     {
-                        post.Tags.Add(new Tag()
-                        {
-                            Name = DbUtils.GetString(reader, "TagName")
-                        });
+                            post.Tags.Add(new Tag()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                Name = DbUtils.GetString(reader, "TagName")
+                            }) ;
                     }
                 }
                     reader.Close();
@@ -127,6 +128,7 @@ namespace Tabloid.Repositories
                         {
                             tags.Add(new Tag()
                             {
+                                Id = DbUtils.GetInt(reader, "Id"),
                                 Name = DbUtils.GetString(reader, "TagName")
                             });
                         }

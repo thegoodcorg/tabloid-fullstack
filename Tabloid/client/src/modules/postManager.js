@@ -86,3 +86,15 @@ export const addPostTag = (postTag) => {
         });
     });
 };
+
+
+  
+// export const addPostTag = (postTag) => {
+//     return fetch(`${apiUrl}/addPostTags`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(postTag),
+//     });
+//   };
