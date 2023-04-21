@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "reactstrap";
-import { deleteTag, getAllTags } from "../modules/tagManager";
+import { addPostTag } from "../modules/postManager";
+import { getAllTags } from "../modules/tagManager";
 import Tag from "./Tag";
 
 
 const TagsAndPosts = () => {
   const [tags, setTags] = useState([]);
+  const [postTag, setPostTag] = useState([]);
 const navigate = useNavigate();
 
 //make a new function in auth manager
@@ -27,7 +29,7 @@ const navigate = useNavigate();
         {tags.map((tag) => (
             <>
           <Tag tag={tag} key={tag.id} />
-          <button className="btn" onClick={() => {}}>Add Tag To Post</button>
+          <Button className="btn" onClick={() => addPostTag(postTag).then(()=> navigate("/post"))}>Add Tag To Post</Button>
           </>
         ))}
       </div>

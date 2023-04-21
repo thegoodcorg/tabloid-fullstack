@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
+using System.Linq;
 using Tabloid.Models;
 using Tabloid.Utils;
 
@@ -10,6 +11,7 @@ namespace Tabloid.Repositories
     {
         public PostRepository(IConfiguration configuration) : base(configuration) { }
 
+
         public List<Post> GetAllPosts()
         {
             using (var conn = Connection)
@@ -18,39 +20,55 @@ namespace Tabloid.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,  
-                                                     PublishDateTime, CategoryId, UserProfileId, IsApproved,  
-                                               up.DisplayName, c.Name
-                                        FROM POST as p
-                                        LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
-                                        LEFT JOIN Category as c ON p.CategoryId = c.Id
-                                        ORDER BY p.PublishDateTime DESC";
+                                                             PublishDateTime, CategoryId, UserProfileId, IsApproved,  
+                                                       up.DisplayName, c.Name, t.Name as TagName
+                                                FROM POST as p
+                                                LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
+                                                LEFT JOIN Category as c ON p.CategoryId = c.Id      
+                                                LEFT JOIN postTag pt on pt.PostId = p.Id
+                                                LEFT JOIN Tag t on pt.TagId = t.Id                               
+
+                                                ORDER BY p.PublishDateTime DESC";
 
                     var posts = new List<Post>();
                     var reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        posts.Add(new Post
+                        var postId = DbUtils.GetInt(reader, "Id");
+                        var post = posts.FirstOrDefault(p => p.Id ==postId);
+                        if (post == null)
                         {
-                            Id = DbUtils.GetInt(reader, "Id"),
-                            Title = DbUtils.GetString(reader, "Title"),
-                            Content = DbUtils.GetString(reader, "Content"),
-                            ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
-                            CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
-                            PublishDateTime = DbUtils.GetDateTime(reader, "PublishDateTime"),
-                            CategoryId = DbUtils.GetInt(reader, "CategoryId"),
-                            UserProfileId = DbUtils.GetInt(reader, "UserProfileId"),
-                            IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
-                            UserProfile = new UserProfile()
+                            post = new Post
                             {
-                                DisplayName = DbUtils.GetString(reader, "DisplayName")
-                            },
-                            Category = new Category()
-                            {
-                                Name = DbUtils.GetString(reader, "Name")
-                            }
-
-                        }) ; ;
+                                Id =postId,
+                                Title = DbUtils.GetString(reader, "Title"),
+                                Content = DbUtils.GetString(reader, "Content"),
+                                ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
+                                CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                                PublishDateTime = DbUtils.GetDateTime(reader, "PublishDateTime"),
+                                CategoryId = DbUtils.GetInt(reader, "CategoryId"),
+                                UserProfileId = DbUtils.GetInt(reader, "UserProfileId"),
+                                IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
+                                UserProfile = new UserProfile()
+                                {
+                                    DisplayName = DbUtils.GetString(reader, "DisplayName")
+                                },
+                                Category = new Category()
+                                {
+                                    Name = DbUtils.GetString(reader, "Name")
+                                },
+                                Tags = new List<Tag>()
+                            };
+                        posts.Add(post);
                     }
+                    if (!reader.IsDBNull(reader.GetOrdinal("TagName")))
+                    {
+                        post.Tags.Add(new Tag()
+                        {
+                            Name = DbUtils.GetString(reader, "TagName")
+                        });
+                    }
+                }
                     reader.Close();
 
                     return posts;
@@ -58,6 +76,7 @@ namespace Tabloid.Repositories
             }
 
         }
+
 
         public Post GetPostById(int id)
         {
@@ -68,16 +87,19 @@ namespace Tabloid.Repositories
                 {
                     cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,  
                                                      PublishDateTime, CategoryId, UserProfileId, IsApproved,  
-                                               up.DisplayName, c.Name
+                                               up.DisplayName, c.Name, t.Name as TagName
                                         FROM POST as p
                                         LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
                                         LEFT JOIN Category as c ON p.CategoryId = c.Id  
+                                        LEFT JOIN postTag pt on pt.PostId = p.Id
+                                        LEFT JOIN Tag t on pt.TagId = t.Id   
                                         WHERE p.Id = @id
                     ";
                     cmd.Parameters.AddWithValue("@id", id);
                     var reader = cmd.ExecuteReader();
 
                     Post post = null;
+                    List<Tag> tags = new List<Tag>();
                     while (reader.Read())
                     {
                         post = new Post()
@@ -98,9 +120,16 @@ namespace Tabloid.Repositories
                             Category = new Category()
                             {
                                 Name = DbUtils.GetString(reader, "Name")
-                            }
-
-                        }; 
+                            },
+                            Tags = tags
+                        };
+                        if (!reader.IsDBNull(reader.GetOrdinal("TagName")))
+                        {
+                            tags.Add(new Tag()
+                            {
+                                Name = DbUtils.GetString(reader, "TagName")
+                            });
+                        }
                     }
                     reader.Close();
 
@@ -177,3 +206,123 @@ namespace Tabloid.Repositories
 
     }
 }
+
+
+//public List<Post> GetAllPosts()
+//{
+//    using (var conn = Connection)
+//    {
+//        conn.Open();
+//        using (var cmd = conn.CreateCommand())
+//        {
+//            cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,  
+//                                                     PublishDateTime, CategoryId, UserProfileId, IsApproved,  
+//                                               up.DisplayName, c.Name, t.Name as TagName
+//                                        FROM POST as p
+//                                        LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
+//                                        LEFT JOIN Category as c ON p.CategoryId = c.Id      
+//                                        LEFT JOIN postTag pt on pt.PostId = p.Id
+//                                        LEFT JOIN Tag t on pt.TagId = t.Id                               
+
+//                                        ORDER BY p.PublishDateTime DESC";
+
+//            var posts = new List<Post>();
+//            var reader = cmd.ExecuteReader();
+//            while (reader.Read())
+//            {
+//                posts.Add(new Post
+//                {
+//                    Id = DbUtils.GetInt(reader, "Id"),
+//                    Title = DbUtils.GetString(reader, "Title"),
+//                    Content = DbUtils.GetString(reader, "Content"),
+//                    ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
+//                    CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+//                    PublishDateTime = DbUtils.GetDateTime(reader, "PublishDateTime"),
+//                    CategoryId = DbUtils.GetInt(reader, "CategoryId"),
+//                    UserProfileId = DbUtils.GetInt(reader, "UserProfileId"),
+//                    IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
+//                    UserProfile = new UserProfile()
+//                    {
+//                        DisplayName = DbUtils.GetString(reader, "DisplayName")
+//                    },
+//                    Category = new Category()
+//                    {
+//                        Name = DbUtils.GetString(reader, "Name")
+//                    },
+//                    Tag = new Tag()
+//                    {
+//                        Name = DbUtils.GetString(reader, "TagName")
+//                    }
+
+//                });
+//            }
+//            reader.Close();
+
+//            return posts;
+//        }
+//    }
+
+//}
+
+//public List<Post> GetAllPosts()
+//{
+//    using (var conn = Connection)
+//    {
+//        conn.Open();
+//        using (var cmd = conn.CreateCommand())
+//        {
+//            cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,  
+//                                                 PublishDateTime, CategoryId, UserProfileId, IsApproved,  
+//                                           up.DisplayName, c.Name, t.Name as TagName
+//                                    FROM POST as p
+//                                    LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
+//                                    LEFT JOIN Category as c ON p.CategoryId = c.Id      
+//                                    LEFT JOIN postTag pt on pt.PostId = p.Id
+//                                    LEFT JOIN Tag t on pt.TagId = t.Id                               
+
+//                                    ORDER BY p.PublishDateTime DESC";
+
+//            var posts = new List<Post>();
+//            var reader = cmd.ExecuteReader();
+//            while (reader.Read())
+//            {
+//                var postId = DbUtils.GetInt(reader, "Id");
+//                var post = posts.FirstOrDefault(p => p.Id == postId);
+//                if (post == null)
+//                {
+//                    post = new Post
+//                    {
+//                        Id = postId,
+//                        Title = DbUtils.GetString(reader, "Title"),
+//                        Content = DbUtils.GetString(reader, "Content"),
+//                        ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
+//                        CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+//                        PublishDateTime = DbUtils.GetDateTime(reader, "PublishDateTime"),
+//                        CategoryId = DbUtils.GetInt(reader, "CategoryId"),
+//                        UserProfileId = DbUtils.GetInt(reader, "UserProfileId"),
+//                        IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
+//                        UserProfile = new UserProfile()
+//                        {
+//                            DisplayName = DbUtils.GetString(reader, "DisplayName")
+//                        },
+//                        Category = new Category()
+//                        {
+//                            Name = DbUtils.GetString(reader, "Name")
+//                        },
+//                        Tags = new List<Tag>()
+//                    };
+//                    posts.Add(post);
+//                }
+//                if (!reader.IsDBNull(reader.GetOrdinal("TagName")))
+//                {
+//                    post.Tags.Add(new Tag()
+//                    {
+//                        Name = DbUtils.GetString(reader, "TagName")
+//                    });
+//                }
+//            }
+//            reader.Close();
+//            return posts;
+//        }
+//    }
+//}

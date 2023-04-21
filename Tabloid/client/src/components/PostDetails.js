@@ -43,15 +43,14 @@ export default function PostDetails() {
                     <p> Posted On: {post.publishDateTime}</p>
                     <CommentForm getComments={getComments} />
                     <PostComments commentsOnPost={commentsOnPost} />
-
-                    <PostComments postId={id}/>
                     
-                    <Button onClick={()=>navigate("ManageTags")}>Manage Tags</Button>
+                    <Button onClick={()=> navigate("ManageTags")}>Manage Tags</Button>
 
                 </CardBody>
             </Card>
         </div>
     )
 }
+
 
 //note to future Shane , add functionally to manage tags button 

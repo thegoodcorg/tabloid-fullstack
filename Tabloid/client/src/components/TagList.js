@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
-import { deleteTag, getAllTags } from "../modules/tagManager";
+import { getAllTags } from "../modules/tagManager";
 import Tag from "./Tag";
-import TagForm from "./TagForm";
 
 const TagList = () => {
   const [tags, setTags] = useState([]);
