@@ -3,10 +3,18 @@ import { useNavigate, useParams } from "react-router-dom"
 import { deletePost, getPostById } from "../modules/postManager";
 import { Button, Card, CardBody, CardSubtitle, CardText, CardTitle } from "reactstrap";
 import { PostComments } from "./PostComments";
+import { CommentForm } from "./CommentForm";
+import { getPostComments } from "../modules/commentManager";
 
 export default function PostDetails() {
     const [post, setPost] = useState({});
+    const [commentsOnPost, setCommentsOnPost] = useState([])
+
     const { id } = useParams();
+
+    useEffect(() => {
+        getComments()
+    }, [])
 
     useEffect(() => {
         getPostById(id).then((p) => {
@@ -14,6 +22,12 @@ export default function PostDetails() {
         })
 
     }, [])
+
+    const getComments = () => {
+        getPostComments(id).then(c => {
+            setCommentsOnPost(c)
+        })
+    }
     const navigate = useNavigate();
     return (
         <div>
@@ -28,7 +42,8 @@ export default function PostDetails() {
                     <CardSubtitle className="mb-2 text-muted"> Posted by: {post.userProfile?.displayName}</CardSubtitle>
                     <CardText className="m-4">{post.content}</CardText>
                     <CardSubtitle className="mb-2 text-muted"> Posted On: {post.publishDateTime}</CardSubtitle>
-                    <PostComments postId={id} />
+                    <CommentForm getComments={getComments} />
+                    <PostComments commentsOnPost={commentsOnPost} />
                 </CardBody>
             </Card>
         </div>
