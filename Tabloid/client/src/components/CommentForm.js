@@ -4,12 +4,11 @@ import { addComment } from "../modules/commentManager";
 import { useNavigate, useParams } from "react-router-dom";
 
 
-export const CommentForm = ( { getComments } ) => {
+export const CommentForm = ({ getComments }) => {
     const [commentContent, setCommentContent] = useState({})
 
     let postId = useParams("id")["id"]
 
-    const navigate = useNavigate();
     return <>
         <input
             value={commentContent.content}
@@ -25,12 +24,11 @@ export const CommentForm = ( { getComments } ) => {
         <Button className="btn btn-primary" onClick={() => {
             const copy = { ...commentContent }
             copy.postId = postId
-            console.log(copy)
             addComment(copy).then((returnedComment) => {
                 console.log(returnedComment)
                 // navigate(`/post/${returnedComment.postId}`)
                 getComments()
-                setCommentContent({content:""})
+                setCommentContent({ content: "" })
             })
 
         }}>Submit</Button>

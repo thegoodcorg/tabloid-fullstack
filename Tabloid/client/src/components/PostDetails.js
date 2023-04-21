@@ -60,7 +60,7 @@ export default function PostDetails() {
                     <CardText className="m-4">{post.content}</CardText>
                     <CardSubtitle className="mb-2 text-muted"> Posted On: {post.publishDateTime}</CardSubtitle>
                     <CommentForm getComments={getComments} />
-                    <PostComments commentsOnPost={commentsOnPost} />
+                    <PostComments commentsOnPost={commentsOnPost} getComments={getComments}/>
                 </CardBody>
                 <Button className="btn btn-danger m-4" onClick={() => {
                     setIsOpen(!isOpen)

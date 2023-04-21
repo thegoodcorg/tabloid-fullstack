@@ -72,8 +72,10 @@ namespace Tabloid.Controllers
 
         // DELETE api/<CommentController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            _commentRepository.Delete(id);
+            return NoContent();
         }
     }
 }
