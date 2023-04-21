@@ -61,7 +61,7 @@ namespace Tabloid.Controllers
 
 
 
-        [HttpPost]
+        [HttpPost("addTags")]
         public IActionResult AddTag(PostTag postTag)
         {
 
