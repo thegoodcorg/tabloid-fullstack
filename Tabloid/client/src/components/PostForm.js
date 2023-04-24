@@ -71,7 +71,7 @@ const PostForm = () => {
                         </div>
                     )}
 
-                    <input
+                    <Input
                         type="file"
                         name="myImage"
                         onChange={(event) => {
