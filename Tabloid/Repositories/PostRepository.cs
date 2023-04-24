@@ -158,11 +158,8 @@ namespace Tabloid.Repositories
                     DbUtils.AddParameter(cmd, "@title", post.Title);
                     DbUtils.AddParameter(cmd, "@content", post.Content);
                     DbUtils.AddParameter(cmd, "@imageLocation", post.ImageLocation);
-                    //DbUtils.AddParameter(cmd, "@createDateTime", post.CreateDateTime);
                     DbUtils.AddParameter(cmd, "@publishDateTime", post.PublishDateTime);
-                    //DbUtils.AddParameter(cmd, "@isApproved", post.IsApproved);
                     DbUtils.AddParameter(cmd, "@categoryId", post.CategoryId);
-                    //DbUtils.AddParameter(cmd, "@userProfileId", post.UserProfileId);
 
                     cmd.ExecuteNonQuery();
 
