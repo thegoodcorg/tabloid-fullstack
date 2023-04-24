@@ -60,10 +60,7 @@ export default function PostDetails() {
                     <CardSubtitle className="mb-2 text-muted"> Posted by: {post.userProfile?.displayName}</CardSubtitle>
                     <CardText className="m-4">{post.content}</CardText>
                     <CardSubtitle className="mb-2 text-muted"> Posted On: {post.publishDateTime}</CardSubtitle>
-                    {/* <strong>{post.title}</strong>
-                    <p> Posted by: {post.userProfile?.displayName}</p>
-                    <p>{post.content}</p>
-                    <p> Posted On: {post.publishDateTime}</p> */}
+                
                         <p>{post.tags?.map(tag => {
                             return <li key={tag.id}>{tag.name} </li>;            
                             })}
