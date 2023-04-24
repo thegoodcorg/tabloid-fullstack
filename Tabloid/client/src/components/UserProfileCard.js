@@ -4,7 +4,6 @@ import {
   Card,
   CardBody,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
 } from "reactstrap";
@@ -15,7 +14,6 @@ import { deactivateUser, reactivateUser } from "../modules/userManager";
 const DeactivateModal = ({ show, onHide, onConfirm }) => {
   return (
     <Modal isOpen={show} toggle={onHide}>
-      <ModalHeader></ModalHeader>
       <ModalBody>
         Are you sure you want to deactivate this user profile?
       </ModalBody>

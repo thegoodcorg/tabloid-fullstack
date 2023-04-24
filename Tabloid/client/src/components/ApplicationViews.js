@@ -18,10 +18,7 @@ import TagsAndPosts from "./TagsAndPosts";
 import PostForm from "./PostForm";
 import PostEdit from "./PostEdit";
 
-
 export default function ApplicationViews({ isLoggedIn }) {
-
-
   return (
     <main>
       <Routes>
@@ -53,6 +50,3 @@ export default function ApplicationViews({ isLoggedIn }) {
     </main>
   );
 }
-
-//yo
-
