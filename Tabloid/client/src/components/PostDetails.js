@@ -122,14 +122,15 @@ export default function PostDetails() {
             {" "}
             Posted On: {post.publishDateTime}
           </CardSubtitle>
-                
-                        <p>{post.tags?.map(tag => {
-                            return <li key={tag.id}>{tag.name} </li>;            
-                            })}
-                        </p>
-                            <div>
-                            <Button onClick={()=> navigate("ManageTags")}>Manage Tags</Button>
-                            </div>
+
+          <p>
+            {post.tags?.map((tag) => {
+              return <li key={tag.id}>{tag.name} </li>;
+            })}
+          </p>
+          <div>
+            <Button onClick={() => navigate("ManageTags")}>Manage Tags</Button>
+          </div>
           <CommentForm getComments={getComments} />
           <PostComments
             commentsOnPost={commentsOnPost}

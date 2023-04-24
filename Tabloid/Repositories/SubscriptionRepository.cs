@@ -62,5 +62,34 @@ namespace Tabloid.Repositories
 				}
 			}
 		}
+
+		public List<int> GetSubscribedPostIdsByFirebaseId(string firebaseId)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"
+									SELECT p.Id AS PostId FROM Subscription AS s LEFT JOIN UserProfile AS up ON s.SubscriberUserProfileId = up.Id 
+									JOIN Post AS p ON p.UserProfileId = s.ProviderUserProfileId
+									WHERE up.FirebaseUserId = @FirebaseId;";
+					cmd.Parameters.AddWithValue("@FirebaseId", firebaseId);
+
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						var postIds = new List<int>();
+						while (reader.Read())
+						{
+							int id = DbUtils.GetInt(reader, "PostId");
+							postIds.Add(id);
+						}
+						reader.Close();
+
+						return postIds;
+					}
+				}
+			}
+		}
 	}
 }
