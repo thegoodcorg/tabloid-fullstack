@@ -60,11 +60,12 @@ export default function PostDetails() {
                     <CardText className="m-4">{post.content}</CardText>
                     <CardSubtitle className="mb-2 text-muted"> Posted On: {post.publishDateTime}</CardSubtitle>
                     <CommentForm getComments={getComments} />
-                    <PostComments commentsOnPost={commentsOnPost} getComments={getComments}/>
+                    <PostComments commentsOnPost={commentsOnPost} getComments={getComments} />
+
+                    <Button className="btn btn-danger m-4" onClick={() => {
+                        setIsOpen(!isOpen)
+                    }}>Delete Post</Button>
                 </CardBody>
-                <Button className="btn btn-danger m-4" onClick={() => {
-                    setIsOpen(!isOpen)
-                }}>Delete Post</Button>
                 <DeletePostModal />
             </Card>
         </div>

@@ -27,8 +27,8 @@ export default function Post({ post }) {
                 <CardSubtitle className="mb-2 text-muted"> Category: {post.category?.name}</CardSubtitle>
                 <CommentPreview postId={post.id} />
 
+                <Button className="m-2" onClick={() => navigate(`Edit/${post.id}`)}>Edit Post</Button>
             </CardBody>
-            <Button className="m-4" onClick={() => navigate(`Edit/${post.id}`)}>Edit Post</Button>
         </Card>
     );
 }
