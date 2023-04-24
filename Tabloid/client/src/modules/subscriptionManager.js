@@ -23,3 +23,19 @@ export const addSubscription = (subscription) => {
     });
   });
 };
+
+export const getAllSubscriptions = () => {
+  return getToken().then((token) => {
+    return fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+    });
+  });
+};

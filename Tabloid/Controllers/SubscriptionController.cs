@@ -31,6 +31,13 @@ namespace Tabloid.Controllers
 			return Ok(subscription);
 		}
 
+		[HttpGet]
+		public IActionResult GetAllSubscriptions()
+		{
+			var allSubscriptions = _subscriptionRepository.GetAllSubscriptions();
+			return Ok(allSubscriptions);
+		}
+
 		private UserProfile GetCurrentUserProfile()
 		{
 			var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
