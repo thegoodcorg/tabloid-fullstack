@@ -4,12 +4,14 @@ import { Button, Form, FormGroup, Input } from 'reactstrap';
 import { editPost, getPostById } from '../modules/postManager';
 
 
+
 const PostEdit = () => {
 
     const { id } = useParams();
     const navigate = useNavigate();
 
     const [post, setPost] = useState({});
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
         getPostById(id).then((p) => {
@@ -17,6 +19,13 @@ const PostEdit = () => {
         })
     }, [])
 
+    const imageHandler = (event) => {
+        const file = event.target.files[0];
+        const formData = new FormData()
+        formData.append('image', file)
+
+        console.log(formData)
+    }
 
     return (
 
@@ -58,7 +67,34 @@ const PostEdit = () => {
                         copy.imageLocation = evt.target.value
                         setPost(copy);
                     }} />
+                or
 
+                <div>
+
+                    {selectedImage && (
+                        <div>
+                            <img
+                                alt="not found"
+                                width={"250px"}
+                                src={URL.createObjectURL(selectedImage)}
+                            />
+                            <br />
+                            <button onClick={() => setSelectedImage(null)}>Remove</button>
+                        </div>
+                    )}
+
+                    <input
+                        type="file"
+                        name="myImage"
+                        onChange={(event) => {
+                            // console.log("first", event.target.files[0], "second", URL);
+                            imageHandler(event);
+                            setSelectedImage(event.target.files[0]);
+
+                        }}
+                    />
+                    <button onClick={() => setSelectedImage(null)}>Remove File</button>
+                </div>
                 <strong >Publication Date</strong>
                 <Input type="date" name="publishDate" id="publishDate" placeholder={post.publishDateTime}
 

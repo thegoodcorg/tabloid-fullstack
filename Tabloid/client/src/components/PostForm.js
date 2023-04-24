@@ -6,7 +6,7 @@ import { addPost } from '../modules/postManager';
 
 const PostForm = () => {
 
-
+    const [selectedImage, setSelectedImage] = useState(null);
     const [post, setPost] = useState({
         Title: "",
         Content: "",
@@ -56,7 +56,19 @@ const PostForm = () => {
                         copy.ImageLocation = evt.target.value
                         setPost(copy);
                     }} />
+                or
+                <div>
 
+                    <input
+                        type="file"
+                        name="myImage"
+                        onChange={(event) => {
+                            console.log(event.target.files[0]);
+                            setSelectedImage(event.target.files[0]);
+                        }}
+                    />
+
+                </div>
                 <strong for="publishDate">Publication Date</strong>
                 <Input type="date" name="publishDate" id="publishDate" placeholder="Optional"
 
