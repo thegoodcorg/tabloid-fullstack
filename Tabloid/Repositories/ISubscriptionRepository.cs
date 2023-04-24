@@ -7,5 +7,6 @@ namespace Tabloid.Repositories
 	{
 		void AddSubscription(Subscription subscription);
 		List<Subscription> GetAllSubscriptions();
+		List<int> GetSubscribedPostIdsByFirebaseId(string firebaseId);
 	}
 }

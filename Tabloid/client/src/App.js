@@ -8,9 +8,9 @@ import { onLoginStatusChange, me, logout } from "./modules/authManager";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
-  const isActiveUser = userProfile
-    ? userProfile.activeStatus === "Active" && isLoggedIn
-    : false;
+  // const isActiveUser = userProfile
+  //   ? userProfile.activeStatus === "Active" && isLoggedIn
+  //   : false;
 
   useEffect(() => {
     onLoginStatusChange(setIsLoggedIn);
