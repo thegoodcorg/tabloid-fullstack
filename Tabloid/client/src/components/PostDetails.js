@@ -12,6 +12,8 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
+import Post from "./Post"
+import { useNavigate, useParams } from "react-router-dom"
 import { PostComments } from "./PostComments";
 import { CommentForm } from "./CommentForm";
 import { getPostComments } from "../modules/commentManager";
@@ -122,6 +124,14 @@ export default function PostDetails() {
             {" "}
             Posted On: {post.publishDateTime}
           </CardSubtitle>
+                
+                        <p>{post.tags?.map(tag => {
+                            return <li key={tag.id}>{tag.name} </li>;            
+                            })}
+                        </p>
+                            <div>
+                            <Button onClick={()=> navigate("ManageTags")}>Manage Tags</Button>
+                            </div>
           <CommentForm getComments={getComments} />
           <PostComments
             commentsOnPost={commentsOnPost}

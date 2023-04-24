@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Tabloid.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TagController : ControllerBase
     {
         private readonly ITagRepository _tagRepository;
+
         public TagController(ITagRepository tagRepository)
         {
             _tagRepository = tagRepository;
@@ -32,6 +33,15 @@ namespace Tabloid.Controllers
             _tagRepository.AddTag(tag);
             return CreatedAtAction(nameof(Get), new { id = tag.Id }, tag);
         }
+
+
+        //[HttpPost]
+        //public IActionResult PostPostTag(PostTag postTag)
+        //{
+
+        //    _tagRepository.AddPostTag(postTag);
+        //    return CreatedAtAction(nameof(Get), new { id = postTag.Id }, postTag);
+        //}
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
