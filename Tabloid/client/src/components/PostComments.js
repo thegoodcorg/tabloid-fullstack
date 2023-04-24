@@ -8,21 +8,20 @@ import { CommentButtons } from "./CommentButtons";
 
 
 export const PostComments = ({ commentsOnPost, getComments }) => {
-    const [currentUser, setCurrentUser] = useState({})
+  const [currentUser, setCurrentUser] = useState({});
 
-    const { id } = useParams();
+  const { id } = useParams();
 
-    const handleDeleteClick = (e) => {
-        deleteComment(e)
-            .then(() => {
-                getComments()
-            })
-    }
-    useEffect(() => {
-        me().then((res) => {
-            setCurrentUser(res)
-        })
-    }, [])
+  const handleDeleteClick = (e) => {
+    deleteComment(e).then(() => {
+      getComments();
+    });
+  };
+  useEffect(() => {
+    me().then((res) => {
+      setCurrentUser(res);
+    });
+  }, []);
 
     return <><h5> Comments</h5> <br />
         {commentsOnPost.map(comment => {
@@ -35,4 +34,5 @@ export const PostComments = ({ commentsOnPost, getComments }) => {
             </React.Fragment>
         })}
     </>
-}
+  );
+};

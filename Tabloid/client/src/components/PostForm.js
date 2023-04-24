@@ -31,7 +31,7 @@ const PostForm = () => {
                     }} />
 
                 <strong for="content">Content</strong>
-                <Input type="text" name="content" id="content" placeholder=""
+                <Input type="textarea" name="content" id="content" placeholder=""
 
                     onChange={(evt) => {
                         let copy = { ...post }

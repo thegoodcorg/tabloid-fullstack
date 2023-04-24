@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Spinner } from "reactstrap";
 import Header from "./components/Header";
 import ApplicationViews from "./components/ApplicationViews";
-import { onLoginStatusChange, me } from "./modules/authManager";
+import { onLoginStatusChange, me, logout } from "./modules/authManager";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -18,7 +18,13 @@ function App() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      me().then(setUserProfile);
+      me().then((userPro) => {
+        if (userPro.activeStatus === "Disabled") {
+          logout();
+        } else {
+          setUserProfile(userPro);
+        }
+      });
     } else {
       setUserProfile(null);
     }
