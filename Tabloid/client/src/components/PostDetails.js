@@ -50,6 +50,7 @@ export default function PostDetails() {
         )
     }
 
+
     return (
         <div>
 
@@ -57,23 +58,25 @@ export default function PostDetails() {
                 <CardBody>
                     {/* <img src={`${post.imageLocation}`} alt="header image" /> */}
                     <CardTitle tag='h5'>{post.title}</CardTitle>
+
                     <CardSubtitle className="mb-2 text-muted"> Posted by: {post.userProfile?.displayName}</CardSubtitle>
                     <CardText className="m-4">{post.content}</CardText>
-                    <CardSubtitle className="mb-2 text-muted"> Posted On: {post.publishDateTime}</CardSubtitle>
-                
-                        <p>{post.tags?.map(tag => {
-                            return <li key={tag.id}>{tag.name} </li>;            
-                            })}
-                        </p>
-                            <div>
-                            <Button onClick={()=> navigate("ManageTags")}>Manage Tags</Button>
-                            </div>
+                    <CardSubtitle className="mb-2 text-muted"> Posted On: {new Date(post.publishDateTime).toLocaleString()}</CardSubtitle>
+                    {console.log(post)}
+                    <p>{post.tags?.map(tag => {
+                        return <li key={tag.id}>{tag.name} </li>;
+                    })}
+                    </p>
+                    <div>
+                        <Button onClick={() => navigate("ManageTags")}>Manage Tags</Button>
+                    </div>
                     <CommentForm getComments={getComments} />
-                    <PostComments commentsOnPost={commentsOnPost} getComments={getComments}/>
+                    <PostComments commentsOnPost={commentsOnPost} getComments={getComments} />
+
+                    <Button className="btn btn-danger m-4" onClick={() => {
+                        setIsOpen(!isOpen)
+                    }}>Delete Post</Button>
                 </CardBody>
-                <Button className="btn btn-danger m-4" onClick={() => {
-                    setIsOpen(!isOpen)
-                }}>Delete Post</Button>
                 <DeletePostModal />
             </Card>
         </div>

@@ -11,7 +11,6 @@ namespace Tabloid.Repositories
     {
         public PostRepository(IConfiguration configuration) : base(configuration) { }
 
-
         public List<Post> GetAllPosts()
         {
             using (var conn = Connection)
@@ -19,28 +18,26 @@ namespace Tabloid.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,  
-                                                             PublishDateTime, CategoryId, UserProfileId, IsApproved,  
+                    cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,
+                                                             PublishDateTime, CategoryId, UserProfileId, IsApproved,
                                                        up.DisplayName, c.Name, t.Name as TagName
                                                 FROM POST as p
                                                 LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
-                                                LEFT JOIN Category as c ON p.CategoryId = c.Id      
+                                                LEFT JOIN Category as c ON p.CategoryId = c.Id
                                                 LEFT JOIN postTag pt on pt.PostId = p.Id
-                                                LEFT JOIN Tag t on pt.TagId = t.Id                               
-
+                                                LEFT JOIN Tag t on pt.TagId = t.Id
                                                 ORDER BY p.PublishDateTime DESC";
-
                     var posts = new List<Post>();
                     var reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         var postId = DbUtils.GetInt(reader, "Id");
-                        var post = posts.FirstOrDefault(p => p.Id ==postId);
+                        var post = posts.FirstOrDefault(p => p.Id == postId);
                         if (post == null)
                         {
                             post = new Post
                             {
-                                Id =postId,
+                                Id = postId,
                                 Title = DbUtils.GetString(reader, "Title"),
                                 Content = DbUtils.GetString(reader, "Content"),
                                 ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
@@ -59,46 +56,42 @@ namespace Tabloid.Repositories
                                 },
                                 Tags = new List<Tag>()
                             };
-                        posts.Add(post);
-                    }
-                    if (!reader.IsDBNull(reader.GetOrdinal("TagName")))
-                    {
+                            posts.Add(post);
+                        }
+                        if (!reader.IsDBNull(reader.GetOrdinal("TagName")))
+                        {
                             post.Tags.Add(new Tag()
                             {
                                 Id = DbUtils.GetInt(reader, "Id"),
                                 Name = DbUtils.GetString(reader, "TagName")
-                            }) ;
+                            });
+                        }
                     }
-                }
                     reader.Close();
-
                     return posts;
                 }
             }
-
         }
-
 
         public Post GetPostById(int id)
         {
             using (var conn = Connection)
             {
                 conn.Open();
-                using(var cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,  
-                                                     PublishDateTime, CategoryId, UserProfileId, IsApproved,  
+                    cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,
+                                                     PublishDateTime, CategoryId, UserProfileId, IsApproved,
                                                up.DisplayName, c.Name, t.Name as TagName, up.FirstName, up.LastName, up.Email
                                         FROM POST as p
                                         LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
-                                        LEFT JOIN Category as c ON p.CategoryId = c.Id  
+                                        LEFT JOIN Category as c ON p.CategoryId = c.Id
                                         LEFT JOIN postTag pt on pt.PostId = p.Id
-                                        LEFT JOIN Tag t on pt.TagId = t.Id   
+                                        LEFT JOIN Tag t on pt.TagId = t.Id
                                         WHERE p.Id = @id
                     ";
                     cmd.Parameters.AddWithValue("@id", id);
                     var reader = cmd.ExecuteReader();
-
                     Post post = null;
                     List<Tag> tags = new List<Tag>();
                     while (reader.Read())
@@ -137,7 +130,6 @@ namespace Tabloid.Repositories
                         }
                     }
                     reader.Close();
-
                     return post;
                 }
             }
@@ -170,45 +162,6 @@ namespace Tabloid.Repositories
         }
 
 
-
-        public List<Tag> GetTagsByPostId(int postId)
-        {
-
-            using (var conn = Connection)
-            {
-                conn.Open();
-
-                using (var cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"
-                SELECT t.Id, t.Name
-                FROM Tag t
-                INNER JOIN PostTag pt ON t.Id = pt.TagId
-                WHERE pt.PostId = @postId";
-
-                    cmd.Parameters.AddWithValue("@postId", postId);
-
-                    using (var reader = cmd.ExecuteReader())
-                    {
-
-                        List<Tag> tags = new List<Tag>();
-                        while (reader.Read())
-                        {
-                            Tag tag = new Tag()
-                            {
-                                Id = DbUtils.GetInt(reader, "Id"),
-                                Name = DbUtils.GetString(reader, "Name")
-                            };
-                            tags.Add(tag);
-                        }
-
-                        return tags;
-                    }
-                }
-            }
-        }
-
-
         public void EditPost(Post post)
         {
             using (var conn = Connection)
@@ -228,11 +181,8 @@ namespace Tabloid.Repositories
                     DbUtils.AddParameter(cmd, "@title", post.Title);
                     DbUtils.AddParameter(cmd, "@content", post.Content);
                     DbUtils.AddParameter(cmd, "@imageLocation", post.ImageLocation);
-                    //DbUtils.AddParameter(cmd, "@createDateTime", post.CreateDateTime);
                     DbUtils.AddParameter(cmd, "@publishDateTime", post.PublishDateTime);
-                    //DbUtils.AddParameter(cmd, "@isApproved", post.IsApproved);
                     DbUtils.AddParameter(cmd, "@categoryId", post.CategoryId);
-                    //DbUtils.AddParameter(cmd, "@userProfileId", post.UserProfileId);
 
                     cmd.ExecuteNonQuery();
 
@@ -258,59 +208,5 @@ namespace Tabloid.Repositories
             }
         }
 
-
     }
 }
-
-
-
-
-
-        //public void EditPost(Post post)
-        //{
-        //    using (var conn = Connection)
-        //    {
-        //        conn.Open();
-        //        using (var cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"UPDATE Post 
-        //                                SET Title = @title,
-        //                                    Content = @content,
-        //                                    ImageLocation = @imageLocation, 
-        //                                    PublishDateTime = @publishDateTime,                                           
-        //                                    CategoryId = @categoryId   
-        //                                 WHERE Id = @id";
-
-        //            DbUtils.AddParameter(cmd, "@id", post.Id);
-        //            DbUtils.AddParameter(cmd, "@title", post.Title);
-        //            DbUtils.AddParameter(cmd, "@content", post.Content);
-        //            DbUtils.AddParameter(cmd, "@imageLocation", post.ImageLocation);
-        //            //DbUtils.AddParameter(cmd, "@createDateTime", post.CreateDateTime);
-        //            DbUtils.AddParameter(cmd, "@publishDateTime", post.PublishDateTime);
-        //            //DbUtils.AddParameter(cmd, "@isApproved", post.IsApproved);
-        //            DbUtils.AddParameter(cmd, "@categoryId", post.CategoryId);
-        //            //DbUtils.AddParameter(cmd, "@userProfileId", post.UserProfileId);
-
-        //            cmd.ExecuteNonQuery();
-
-
-        //        }
-        //    }
-        //}
-
-        //public void DeletePost(int id)
-        //{
-        //    using (var conn = Connection)
-        //    {
-        //        conn.Open();
-        //        using (var cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"DELETE FROM Comment WHERE PostId = @id;
-        //                                DELETE FROM Post WHERE Id = @id; ";
-
-        //            DbUtils.AddParameter(cmd, "@id", id);
-
-        //            cmd.ExecuteNonQuery();
-        //        }
-        //    }
-        //}
