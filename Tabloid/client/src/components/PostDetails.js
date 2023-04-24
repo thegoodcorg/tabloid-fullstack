@@ -11,7 +11,6 @@ import {
   Modal,
   ModalBody,
   ModalFooter,
-  ModalHeader,
 } from "reactstrap";
 import { PostComments } from "./PostComments";
 import { CommentForm } from "./CommentForm";
@@ -44,7 +43,6 @@ export default function PostDetails() {
   const DeletePostModal = () => {
     return (
       <Modal isOpen={isOpen}>
-        {/* <ModalHeader></ModalHeader> */}
         <ModalBody>Are you sure you want to delete this post?</ModalBody>
         <ModalFooter>
           <Button
@@ -58,7 +56,7 @@ export default function PostDetails() {
             className="btn btn-danger m-4"
             onClick={() => {
               deletePost(id);
-              navigate(-1);
+              navigate(`/post`);
             }}
           >
             Delete
@@ -69,8 +67,12 @@ export default function PostDetails() {
   };
 
   const handleSubscribe = () => {
-
-  }
+    let subscription = {
+      subscriberUserProfileId: 1,
+      providerUserProfileId: 1,
+      beginDateTime: new Date()
+    }
+  };
 
   const SubscriptionButton = () => {
     return (
@@ -86,11 +88,11 @@ export default function PostDetails() {
         <CardBody>
           {/* <img src={`${post.imageLocation}`} alt="header image" /> */}
           <CardTitle tag="h5">{post.title}</CardTitle>
-            <CardSubtitle className="mb-2 text-muted">
-              {" "}
-              Posted by: {post.userProfile?.displayName}
-            </CardSubtitle>
-            <SubscriptionButton />
+          <CardSubtitle className="mb-2 text-muted">
+            {" "}
+            Posted by: {post.userProfile?.displayName}
+          </CardSubtitle>
+          <SubscriptionButton />
           <CardText className="m-4">{post.content}</CardText>
           <CardSubtitle className="mb-2 text-muted">
             {" "}

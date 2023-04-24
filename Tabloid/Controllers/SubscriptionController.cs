@@ -14,19 +14,21 @@ namespace Tabloid.Controllers
 	{
 		private readonly IPostRepository _postRepository;
 		private readonly IUserProfileRepository _userProfileRepository;
-		public SubscriptionController(IPostRepository postRepository, IUserProfileRepository userProfileRepository)
+		private readonly ISubscriptionRepository _subscriptionRepository;
+		public SubscriptionController(IPostRepository postRepository, IUserProfileRepository userProfileRepository, ISubscriptionRepository subscriptionRepository)
 		{
 			_postRepository = postRepository;
 			_userProfileRepository = userProfileRepository;
+			_subscriptionRepository = subscriptionRepository;
 		}
 
 		[HttpPost]
 		public IActionResult Post(Subscription subscription)
 		{
 			var currentUser = GetCurrentUserProfile();
-			_postRepository.AddSubscription(subscription);
+			_subscriptionRepository.AddSubscription(subscription);
 
-			return Ok();
+			return Ok(subscription);
 		}
 
 		private UserProfile GetCurrentUserProfile()
