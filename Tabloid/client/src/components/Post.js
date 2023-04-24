@@ -7,13 +7,22 @@ import { CommentPreview } from "./CommentPreview";
 
 export default function Post({ post }) {
 
-    // const [postDetails, setPostDetails] = useState({
-    //     Title: post.Title,
-    //     Content: post.Content,
-    //     CategoryId: post.CategoryId,
-    //     ImageLocation: post.ImageLocation,
-    //     PublishDateTime: post.PublishDateTime
-    // });
+    const ReadTime = (post) => {
+
+        let words = post.content?.split(" ").length;
+
+        let readTime = words / 265;
+
+        let display = Math.round(readTime) + 1
+
+        if (display != 1) {
+            return `${display} minutes`
+        }
+        else {
+            return `${display} minute`
+        }
+    }
+
 
     const navigate = useNavigate();
 
@@ -23,6 +32,7 @@ export default function Post({ post }) {
                 <Link to={`/post/${post.id}`} >
                     <CardTitle tag='h5'>{post.title}</CardTitle>
                 </Link>
+                <CardSubtitle className="mb-2 text-muted"> Estimated Read Time: {ReadTime(post)}</CardSubtitle>
                 <CardSubtitle className="mb-2 text-muted"> Posted by: {post.userProfile?.displayName}</CardSubtitle>
                 <CardSubtitle className="mb-2 text-muted"> Category: {post.category?.name}</CardSubtitle>
                 <CommentPreview postId={post.id} />

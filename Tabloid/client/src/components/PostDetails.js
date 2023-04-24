@@ -49,6 +49,7 @@ export default function PostDetails() {
         )
     }
 
+
     return (
         <div>
 
@@ -56,9 +57,10 @@ export default function PostDetails() {
                 <CardBody>
                     {/* <img src={`${post.imageLocation}`} alt="header image" /> */}
                     <CardTitle tag='h5'>{post.title}</CardTitle>
+
                     <CardSubtitle className="mb-2 text-muted"> Posted by: {post.userProfile?.displayName}</CardSubtitle>
                     <CardText className="m-4">{post.content}</CardText>
-                    <CardSubtitle className="mb-2 text-muted"> Posted On: {post.publishDateTime}</CardSubtitle>
+                    <CardSubtitle className="mb-2 text-muted"> Posted On: {new Date(post.publishDateTime).toLocaleString()}</CardSubtitle>
                     <CommentForm getComments={getComments} />
                     <PostComments commentsOnPost={commentsOnPost} getComments={getComments} />
 
