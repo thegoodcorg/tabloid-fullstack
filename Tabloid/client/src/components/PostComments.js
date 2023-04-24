@@ -12,11 +12,6 @@ export const PostComments = ({ commentsOnPost, getComments }) => {
 
   const { id } = useParams();
 
-  const handleDeleteClick = (e) => {
-    deleteComment(e).then(() => {
-      getComments();
-    });
-  };
   useEffect(() => {
     me().then((res) => {
       setCurrentUser(res);
@@ -34,5 +29,4 @@ export const PostComments = ({ commentsOnPost, getComments }) => {
             </React.Fragment>
         })}
     </>
-  );
-};
+}
