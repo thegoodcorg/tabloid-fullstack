@@ -40,7 +40,7 @@ namespace Tabloid.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok();
+            return Ok(_commentRepository.GetCommentById(id));
         }
 
         [HttpGet("postComments")]
@@ -66,8 +66,10 @@ namespace Tabloid.Controllers
 
         // PUT api/<CommentController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(Comment comment)
         {
+            _commentRepository.EditComment(comment);
+            return NoContent();
         }
 
         // DELETE api/<CommentController>/5

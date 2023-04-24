@@ -110,9 +110,9 @@ namespace Tabloid.Repositories
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                             Profile = new UserProfile()
                             {
-                                FirstName = DbUtils.GetString(reader,"FirstName"),
+                                FirstName = DbUtils.GetString(reader, "FirstName"),
                                 LastName = DbUtils.GetString(reader, "LastName"),
-                                Email = DbUtils.GetString(reader,"Email"),
+                                Email = DbUtils.GetString(reader, "Email"),
                                 DisplayName = DbUtils.GetString(reader, "DisplayName")
                             }
                         };
@@ -123,6 +123,68 @@ namespace Tabloid.Repositories
                 }
             }
         }
+
+        public Comment GetCommentById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using var cmd = conn.CreateCommand();
+                {
+                    cmd.CommandText = @"
+                                        SELECT 
+                                            Id, 
+                                            PostId, 
+                                            UserProfileId, 
+                                            Subject, 
+                                            Content, 
+                                            CreateDateTime
+                                        FROM Comment c
+                                        WHERE id = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", id);
+
+                    var reader = cmd.ExecuteReader();
+                    Comment comment = null;
+                    while (reader.Read())
+                    {
+                        comment = new Comment()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            PostId = DbUtils.GetInt(reader, "PostId"),
+                            UserProfileId = DbUtils.GetInt(reader, "UserProfileId"),
+                            Subject = DbUtils.GetString(reader, "Subject"),
+                            Content = DbUtils.GetString(reader, "Content"),
+                            CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                        };
+
+                    }
+                        reader.Close();
+                        return comment;
+                }
+            }
+        }
+
+        public void EditComment(Comment comment)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using var cmd = conn.CreateCommand();
+                {
+                    cmd.CommandText = @"UPDATE comment
+                                            SET Subject = @subject,
+                                            Content = @content
+                                            WHERE Id = @id";
+                    DbUtils.AddParameter(cmd, "@subject", comment.Subject);
+                    DbUtils.AddParameter(cmd, "@content", comment.Content);
+                    DbUtils.AddParameter(cmd, "@id", comment.Id);
+                    
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void Delete(int id)
         {
             using (var conn = Connection)
