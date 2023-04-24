@@ -8,6 +8,9 @@ import { onLoginStatusChange, me } from "./modules/authManager";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
+  const isActiveUser = userProfile
+    ? userProfile.activeStatus === "Active" && isLoggedIn
+    : false;
 
   useEffect(() => {
     onLoginStatusChange(setIsLoggedIn);
@@ -20,6 +23,14 @@ function App() {
       setUserProfile(null);
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (userProfile) {
+      if (userProfile.activeStatus === "Deactivated") {
+        setIsLoggedIn(false);
+      }
+    }
+  }, [userProfile]);
 
   if (isLoggedIn === null) {
     return <Spinner className="app-spinner dark" />;

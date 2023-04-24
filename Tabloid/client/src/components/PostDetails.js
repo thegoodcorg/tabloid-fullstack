@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
+import { deletePost, getPostById } from "../modules/postManager";
+import { Button, Card, CardBody, CardSubtitle, CardText, CardTitle, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Post from "./Post"
 import { useNavigate, useParams } from "react-router-dom"
-import { getPostById } from "../modules/postManager";
-import { Button, Card, CardBody } from "reactstrap";
-import { Link } from "react-router-dom";
 import { PostComments } from "./PostComments";
 import { CommentForm } from "./CommentForm";
 import { getPostComments } from "../modules/commentManager";
@@ -11,6 +10,7 @@ import { getPostComments } from "../modules/commentManager";
 export default function PostDetails() {
     const [post, setPost] = useState({});
     const [commentsOnPost, setCommentsOnPost] = useState([])
+    const [isOpen, setIsOpen] = useState(false)
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -32,15 +32,38 @@ export default function PostDetails() {
         })
     }
 
+    const DeletePostModal = () => {
+        return (
+            <Modal isOpen={isOpen}>
+                {/* <ModalHeader></ModalHeader> */}
+                <ModalBody >Are you sure you want to delete this post?</ModalBody>
+                <ModalFooter >
+                    <Button onClick={() => {
+                        setIsOpen(!isOpen)
+                    }}>Cancel</Button>
+                    <Button className="btn btn-danger m-4" onClick={() => {
+                        deletePost(id);
+                        navigate(`/post`);
+                    }} >Delete</Button>
+                </ModalFooter>
+            </Modal>
+        )
+    }
+
     return (
         <div>
+
             <Card className="m-4">
                 <CardBody>
                     {/* <img src={`${post.imageLocation}`} alt="header image" /> */}
-                    <strong>{post.title}</strong>
+                    <CardTitle tag='h5'>{post.title}</CardTitle>
+                    <CardSubtitle className="mb-2 text-muted"> Posted by: {post.userProfile?.displayName}</CardSubtitle>
+                    <CardText className="m-4">{post.content}</CardText>
+                    <CardSubtitle className="mb-2 text-muted"> Posted On: {post.publishDateTime}</CardSubtitle>
+                    {/* <strong>{post.title}</strong>
                     <p> Posted by: {post.userProfile?.displayName}</p>
                     <p>{post.content}</p>
-                    <p> Posted On: {post.publishDateTime}</p>
+                    <p> Posted On: {post.publishDateTime}</p> */}
                         <p>{post.tags?.map(tag => {
                             return <li key={tag.id}>{tag.name} </li>;            
                             })}
@@ -49,10 +72,12 @@ export default function PostDetails() {
                             <Button onClick={()=> navigate("ManageTags")}>Manage Tags</Button>
                             </div>
                     <CommentForm getComments={getComments} />
-                    
-                    <PostComments commentsOnPost={commentsOnPost} />
-
+                    <PostComments commentsOnPost={commentsOnPost} getComments={getComments}/>
                 </CardBody>
+                <Button className="btn btn-danger m-4" onClick={() => {
+                    setIsOpen(!isOpen)
+                }}>Delete Post</Button>
+                <DeletePostModal />
             </Card>
         </div>
     )

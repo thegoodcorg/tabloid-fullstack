@@ -53,6 +53,27 @@ namespace Tabloid.Controllers
             return CreatedAtAction("Get", new { id = post.Id }, post);
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Post post)
+        {
+           
+            if (id != post.Id)
+            {
+                Console.WriteLine("id: ", id, "post id: ", post.Id);
+                return BadRequest();
+            }
+
+            _postRepository.EditPost(post);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _postRepository.DeletePost(id);
+            return Ok();
+        }
+
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

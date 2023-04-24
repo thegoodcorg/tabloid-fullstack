@@ -65,7 +65,7 @@ namespace Tabloid.Repositories
 				{
 					cmd.CommandText = @"
                         SELECT up.Id, up.FirebaseUserId, up.FirstName, up.LastName, up.DisplayName, 
-                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId,
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.ActiveStatus,
                                ut.Name AS UserTypeName
                           FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
@@ -88,6 +88,7 @@ namespace Tabloid.Repositories
 							Email = DbUtils.GetString(reader, "Email"),
 							CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
 							ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
+							ActiveStatus = DbUtils.GetString(reader, "ActiveStatus"),
 							UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
 							UserType = new UserType()
 							{
@@ -158,10 +159,10 @@ namespace Tabloid.Repositories
 				using (var cmd = conn.CreateCommand())
 				{
 					cmd.CommandText = @"INSERT INTO UserProfile (FirebaseUserId, FirstName, LastName, DisplayName, 
-                                                                 Email, CreateDateTime, ImageLocation, UserTypeId)
+                                                                 Email, CreateDateTime, ImageLocation, UserTypeId, ActiveStatus)
                                         OUTPUT INSERTED.ID
                                         VALUES (@FirebaseUserId, @FirstName, @LastName, @DisplayName, 
-                                                @Email, @CreateDateTime, @ImageLocation, @UserTypeId)";
+                                                @Email, @CreateDateTime, @ImageLocation, @UserTypeId, @ActiveStatus)";
 					DbUtils.AddParameter(cmd, "@FirebaseUserId", userProfile.FirebaseUserId);
 					DbUtils.AddParameter(cmd, "@FirstName", userProfile.FirstName);
 					DbUtils.AddParameter(cmd, "@LastName", userProfile.LastName);
@@ -170,6 +171,7 @@ namespace Tabloid.Repositories
 					DbUtils.AddParameter(cmd, "@CreateDateTime", userProfile.CreateDateTime);
 					DbUtils.AddParameter(cmd, "@ImageLocation", userProfile.ImageLocation);
 					DbUtils.AddParameter(cmd, "@UserTypeId", userProfile.UserTypeId);
+					DbUtils.AddParameter(cmd, "@ActiveStatus", userProfile.ActiveStatus);
 
 					userProfile.Id = (int)cmd.ExecuteScalar();
 				}
@@ -184,6 +186,20 @@ namespace Tabloid.Repositories
 				using (var cmd = conn.CreateCommand())
 				{
 					cmd.CommandText = @"UPDATE UserProfile SET ActiveStatus = 'Deactivated' WHERE Id = @UserId";
+					DbUtils.AddParameter(cmd, "@UserId", userId);
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public void ReactivateUser(string userId)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"UPDATE UserProfile SET ActiveStatus = 'Active' WHERE Id = @UserId";
 					DbUtils.AddParameter(cmd, "@UserId", userId);
 					cmd.ExecuteNonQuery();
 				}

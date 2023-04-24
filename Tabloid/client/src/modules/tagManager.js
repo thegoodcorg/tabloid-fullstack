@@ -4,36 +4,36 @@ const _apiUrl = "/api/tag";
 
 
 export const getAllTags = () => {
-    return fetch(_apiUrl)
-      .then((res) => res.json())
-  };
+  return fetch(_apiUrl)
+    .then((res) => res.json())
+};
 
-  export const getTagById = (id) => {
-    return fetch(`${_apiUrl}/${id}`)
-      .then((res) => res.json())
-  };
+export const getTagById = (id) => {
+  return fetch(`${_apiUrl}/${id}`)
+    .then((res) => res.json())
+};
 
 
-  
-  export const addTag = (tag) => {
-    return fetch(_apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(tag),
-    });
-  };
 
-  export const updateTag = (tag) => {
-    return fetch(`${_apiUrl}/${tag.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(tag),
-      });
-  };
+export const addTag = (tag) => {
+  return fetch(_apiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(tag),
+  });
+};
+
+export const updateTag = (tag) => {
+  return fetch(`${_apiUrl}/${tag.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(tag),
+  });
+};
 
   export const deleteTag = (id) => {
     return fetch(`${_apiUrl}/${id}`, {
@@ -44,22 +44,3 @@ export const getAllTags = () => {
         body: JSON.stringify(id),
       });
   };
-
-//   export const getPostTags = (postId) => {
-//     return getToken().then((token) => {
-//         return fetch(`${_apiUrl}/postTags?postId=${postId}`, {
-//             method: "GET",
-//             headers: {
-//                 Authorization: `Bearer ${token}`,
-//             },
-//         }).then((res) => {
-//             if (res.ok) {
-//                 return res.json();
-//             } else {
-//                 throw new Error(
-//                     "An unknown error occured while trying to get this posts comments."
-//                 );
-//             }
-//         });
-//     });
-// };
