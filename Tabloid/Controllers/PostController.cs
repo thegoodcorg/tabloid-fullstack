@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using Tabloid.Models;
 using Tabloid.Repositories;
@@ -46,7 +48,16 @@ namespace Tabloid.Controllers
             var currentUser = GetCurrentUserProfile();
             post.UserProfileId = currentUser.Id;
             post.CreateDateTime = DateTime.Now;
-            post.IsApproved = true;
+
+            if(currentUser.UserTypeId == 1) 
+            {
+                post.IsApproved = true;
+
+            } 
+            else
+            {
+                post.IsApproved = false;
+            }
 
             _postRepository.AddPost(post);
 
@@ -90,5 +101,14 @@ namespace Tabloid.Controllers
             return CreatedAtAction(nameof(Get), new { id = postTag.Id }, postTag);
 
         }
+
+        [HttpPost("addImage")]
+        public IActionResult addImage(string imageData)
+        {
+            IFormFile file = Request.Form.Files.FirstOrDefault();
+            Console.WriteLine($"{imageData}");
+            return Ok();
+        }
+
     }
 }
