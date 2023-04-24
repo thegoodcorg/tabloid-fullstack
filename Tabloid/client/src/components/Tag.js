@@ -6,7 +6,7 @@ const Tag = ({ tag}) => {
   return (
     <Card >
       <CardBody>
-          <p>
+          <p key={tag.id}>
             <strong>{tag.name}</strong>
           </p>
       </CardBody>

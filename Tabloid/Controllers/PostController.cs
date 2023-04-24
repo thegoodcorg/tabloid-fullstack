@@ -13,9 +13,12 @@ namespace Tabloid.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly IUserProfileRepository _userProfileRepository;
-        public PostController(IPostRepository postRepository, IUserProfileRepository userProfileRepository)
+        private readonly ITagRepository _tagRepository;
+
+        public PostController(IPostRepository postRepository, ITagRepository tagRepository, IUserProfileRepository userProfileRepository)
         {
             _postRepository = postRepository;
+            _tagRepository = tagRepository;
             _userProfileRepository = userProfileRepository;
         }
 
@@ -77,5 +80,15 @@ namespace Tabloid.Controllers
             return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
 
+
+
+        [HttpPost("addPostTags")]
+        public IActionResult AddTag(PostTag postTag)
+        {
+
+            _tagRepository.AddPostTag(postTag);
+            return CreatedAtAction(nameof(Get), new { id = postTag.Id }, postTag);
+
+        }
     }
 }
