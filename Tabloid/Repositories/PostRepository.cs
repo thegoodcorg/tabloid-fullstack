@@ -18,15 +18,14 @@ namespace Tabloid.Repositories
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,  
+					cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,
+                                                             PublishDateTime, CategoryId, UserProfileId, IsApproved,
                                                              PublishDateTime, CategoryId, UserProfileId, IsApproved,  
                                                        up.DisplayName, c.Name, t.Name as TagName
                                                 FROM POST as p
                                                 LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
-                                                LEFT JOIN Category as c ON p.CategoryId = c.Id      
-                                                LEFT JOIN postTag pt on pt.PostId = p.Id
-                                                LEFT JOIN Tag t on pt.TagId = t.Id                               
-                                                ORDER BY p.PublishDateTime DESC";
+                                                LEFT JOIN Category as c ON p.CategoryId = c.Id
+                                                LEFT JOIN Tag t on pt.TagId = t.Id
 
 					var posts = new List<Post>();
 					var reader = cmd.ExecuteReader();
@@ -73,10 +72,7 @@ namespace Tabloid.Repositories
 					return posts;
 				}
 			}
-
 		}
-
-
 		public Post GetPostById(int id)
 		{
 			using (var conn = Connection)
@@ -84,19 +80,18 @@ namespace Tabloid.Repositories
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,  
+					cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,
+                                                     PublishDateTime, CategoryId, UserProfileId, IsApproved,
                                                      PublishDateTime, CategoryId, UserProfileId, IsApproved,  
                                                up.DisplayName, c.Name, t.Name as TagName, up.FirstName, up.LastName, up.Email
                                         FROM POST as p
                                         LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
-                                        LEFT JOIN Category as c ON p.CategoryId = c.Id  
+                                        LEFT JOIN Category as c ON p.CategoryId = c.Id
                                         LEFT JOIN postTag pt on pt.PostId = p.Id
-                                        LEFT JOIN Tag t on pt.TagId = t.Id   
+                                        LEFT JOIN Tag t on pt.TagId = t.Id
                                         WHERE p.Id = @id
                     ";
 					cmd.Parameters.AddWithValue("@id", id);
-					var reader = cmd.ExecuteReader();
-
 					Post post = null;
 					List<Tag> tags = new List<Tag>();
 					while (reader.Read())
@@ -168,7 +163,6 @@ namespace Tabloid.Repositories
 		}
 
 
-
 		public List<Tag> GetTagsByPostId(int postId)
 		{
 
@@ -207,6 +201,7 @@ namespace Tabloid.Repositories
 		}
 
 
+
 		public void EditPost(Post post)
 		{
 			using (var conn = Connection)
@@ -226,11 +221,8 @@ namespace Tabloid.Repositories
 					DbUtils.AddParameter(cmd, "@title", post.Title);
 					DbUtils.AddParameter(cmd, "@content", post.Content);
 					DbUtils.AddParameter(cmd, "@imageLocation", post.ImageLocation);
-					//DbUtils.AddParameter(cmd, "@createDateTime", post.CreateDateTime);
 					DbUtils.AddParameter(cmd, "@publishDateTime", post.PublishDateTime);
-					//DbUtils.AddParameter(cmd, "@isApproved", post.IsApproved);
 					DbUtils.AddParameter(cmd, "@categoryId", post.CategoryId);
-					//DbUtils.AddParameter(cmd, "@userProfileId", post.UserProfileId);
 
 					cmd.ExecuteNonQuery();
 
@@ -255,10 +247,9 @@ namespace Tabloid.Repositories
 				}
 			}
 		}
-
 	}
 }
-
+}
 
 
 
@@ -289,12 +280,13 @@ namespace Tabloid.Repositories
 //            //DbUtils.AddParameter(cmd, "@userProfileId", post.UserProfileId);
 
 //            cmd.ExecuteNonQuery();
+        //            cmd.ExecuteNonQuery();
 
-
+					cmd.Parameters.AddWithValue("@postId", postId);
 //        }
 //    }
 //}
-
+        //}
 //public void DeletePost(int id)
 //{
 //    using (var conn = Connection)
@@ -304,10 +296,11 @@ namespace Tabloid.Repositories
 //        {
 //            cmd.CommandText = @"DELETE FROM Comment WHERE PostId = @id;
 //                                DELETE FROM Post WHERE Id = @id; ";
-
+        //                                DELETE FROM Post WHERE Id = @id; ";
 //            DbUtils.AddParameter(cmd, "@id", id);
-
+        //            DbUtils.AddParameter(cmd, "@id", id);
 //            cmd.ExecuteNonQuery();
 //        }
 //    }
 //}
+        //}
