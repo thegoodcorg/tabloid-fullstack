@@ -1,4 +1,4 @@
-// import { getToken } from "./authManager";
+import { getToken } from "./authManager";
 
 const _apiUrl = "/api/tag";
 

@@ -3,6 +3,7 @@ import { Card, CardBody } from "reactstrap";
 import { deleteComment } from "../modules/commentManager";
 import { me } from "../modules/authManager";
 import { useParams } from "react-router-dom"
+import { CommentButtons } from "./CommentButtons";
 
 
 
@@ -25,15 +26,13 @@ export const PostComments = ({ commentsOnPost, getComments }) => {
 
     return <><h5> Comments</h5> <br />
         {commentsOnPost.map(comment => {
-            return <>        <u>{comment.profile.displayName}</u> says <br />
-                <li key={comment.id}>
+            return <React.Fragment key={comment.id}>        <u>{comment.profile.displayName}</u> says <br />
+                <li>
 
                     {comment.content}<br />
-                    {comment.userProfileId === currentUser.id ? <button onClick={() => {
-                        handleDeleteClick(comment.id)
-                    }}>Delete</button> : ""}
+                    {comment.userProfileId === currentUser.id ? <CommentButtons getComments={getComments} commentId={comment.id} /> : ""}
                 </li>
-            </>
+            </React.Fragment>
         })}
     </>
 }
