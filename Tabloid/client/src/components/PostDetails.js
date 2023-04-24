@@ -12,8 +12,6 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
-import Post from "./Post"
-import { useNavigate, useParams } from "react-router-dom"
 import { PostComments } from "./PostComments";
 import { CommentForm } from "./CommentForm";
 import { getPostComments } from "../modules/commentManager";
