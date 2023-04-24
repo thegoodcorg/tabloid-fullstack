@@ -39,6 +39,24 @@ export const getPostComments = (postId) => {
         });
     });
 };
+export const GetCommentById = (id) => {
+    return getToken().then((token) => {
+        return fetch(`${apiUrl}/${id}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((res) => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                throw new Error(
+                    "An unknown error occured while trying to get this posts comments."
+                );
+            }
+        });
+    });
+}
 
 export const addComment = (comment) => {
     return getToken().then((token) => {
@@ -62,6 +80,27 @@ export const addComment = (comment) => {
         });
     });
 } 
+
+export const editComment = (comment) => {
+    return getToken().then((token) => {
+        return fetch(`${apiUrl}/${comment.id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(comment),
+        }).then((resp) => {
+            if (resp.ok) {
+                return resp;
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to update a comment.",
+                );
+            }
+        });
+    });
+}
 
 export const deleteComment = (id) => {
     return fetch(`${apiUrl}/${id}`, {
