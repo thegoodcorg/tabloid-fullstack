@@ -6,7 +6,6 @@ import { addPost } from '../modules/postManager';
 
 const PostForm = () => {
 
-    const [selectedImage, setSelectedImage] = useState(null);
     const [post, setPost] = useState({
         Title: "",
         Content: "",
@@ -14,6 +13,7 @@ const PostForm = () => {
         ImageLocation: "",
         PublishDateTime: ""
     });
+    const [selectedImage, setSelectedImage] = useState(null);
     const navigate = useNavigate();
 
     return (
@@ -59,16 +59,28 @@ const PostForm = () => {
                 or
                 <div>
 
+                    {selectedImage && (
+                        <div>
+                            <img
+                                alt="not found"
+                                width={"250px"}
+                                src={URL.createObjectURL(selectedImage)}
+                            />
+
+                            <button onClick={() => setSelectedImage(null)}>Remove File</button>
+                        </div>
+                    )}
+
                     <input
                         type="file"
                         name="myImage"
                         onChange={(event) => {
-                            console.log(event.target.files[0]);
+                            // console.log(event.target.files[0]);
                             setSelectedImage(event.target.files[0]);
                         }}
                     />
-
                 </div>
+
                 <strong for="publishDate">Publication Date</strong>
                 <Input type="date" name="publishDate" id="publishDate" placeholder="Optional"
 
@@ -85,7 +97,7 @@ const PostForm = () => {
                 })
 
             }}>Submit</Button>
-        </Form>
+        </Form >
     );
 };
 

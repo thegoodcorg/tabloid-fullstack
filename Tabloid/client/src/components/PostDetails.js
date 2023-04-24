@@ -56,7 +56,7 @@ export default function PostDetails() {
 
             <Card className="m-4">
                 <CardBody>
-                    <img src={`${post.imageLocation}`} alt="header image" />
+                    {/* <img src={`${post.imageLocation}`} alt="header image" /> */}
                     <CardTitle tag='h5'>{post.title}</CardTitle>
 
                     <CardSubtitle className="mb-2 text-muted"> Posted by: {post.userProfile?.displayName}</CardSubtitle>
