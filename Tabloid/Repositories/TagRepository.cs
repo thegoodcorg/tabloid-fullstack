@@ -140,6 +140,30 @@ namespace Tabloid.Repositories
             }
         }
 
+        public void AddPostTag(PostTag posttag)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                INSERT INTO PostTag (PostId, TagId)
+                OUTPUT INSERTED.ID
+                VALUES (@PostId, @TagId);
+            ";
+
+                    cmd.Parameters.AddWithValue("@PostId", posttag.PostId);
+                    cmd.Parameters.AddWithValue("@TagId", posttag.TagId);
+
+                    int newlyCreatedId = (int)cmd.ExecuteScalar();
+
+                    posttag.Id = newlyCreatedId;
+
+                }
+            }
+        }
+
 
     }
 }

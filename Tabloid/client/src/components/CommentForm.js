@@ -21,6 +21,7 @@ export const CommentForm = ({ getComments }) => {
             }}>
 
         </input>
+        <div>
         <Button className="btn btn-primary" onClick={() => {
             const copy = { ...commentContent }
             copy.postId = postId
@@ -32,6 +33,7 @@ export const CommentForm = ({ getComments }) => {
             })
 
         }}>Submit</Button>
+        </div>
         <br />
     </>
 }
