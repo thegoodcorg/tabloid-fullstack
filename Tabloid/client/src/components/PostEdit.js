@@ -91,7 +91,6 @@ const PostEdit = () => {
                                 // testImageSend(event.target.files[0]);
                             }} />
 
-                        <button onClick={() => setSelectedImage(null)}>Remove File</button>
                     </div>
                     <strong>Publication Date</strong>
                     <Input type="date" name="publishDate" id="publishDate" placeholder={post.publishDateTime}
