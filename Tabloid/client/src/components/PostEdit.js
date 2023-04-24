@@ -10,6 +10,7 @@ const PostEdit = () => {
     const navigate = useNavigate();
 
     const [post, setPost] = useState({});
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
         getPostById(id).then((p) => {
@@ -33,7 +34,7 @@ const PostEdit = () => {
                     }} />
 
                 <strong >Content</strong>
-                <Input type="text" name="content" id="content" placeholder={post.content}
+                <Input type="textarea" name="content" id="content" placeholder={post.content}
 
                     onChange={(evt) => {
                         let copy = { ...post }
@@ -58,6 +59,31 @@ const PostEdit = () => {
                         copy.imageLocation = evt.target.value
                         setPost(copy);
                     }} />
+                or
+                <div>
+
+                    {selectedImage && (
+                        <div>
+                            <img
+                                alt="not found"
+                                width={"250px"}
+                                src={URL.createObjectURL(selectedImage)}
+                            />
+                            <br />
+                            <button onClick={() => setSelectedImage(null)}>Remove File</button>
+                        </div>
+                    )}
+
+                    <input
+                        type="file"
+                        name="myImage"
+                        onChange={(event) => {
+                            // console.log(event.target.files[0]);
+                            setSelectedImage(event.target.files[0]);
+                            // testImageSend(event.target.files[0]);
+                        }}
+                    />
+                </div>
 
                 <strong >Publication Date</strong>
                 <Input type="date" name="publishDate" id="publishDate" placeholder={post.publishDateTime}

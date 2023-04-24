@@ -22,17 +22,17 @@ export const CommentForm = ({ getComments }) => {
 
         </input>
         <div>
-        <Button className="btn btn-primary" onClick={() => {
-            const copy = { ...commentContent }
-            copy.postId = postId
-            addComment(copy).then((returnedComment) => {
-                console.log(returnedComment)
-                // navigate(`/post/${returnedComment.postId}`)
-                getComments()
-                setCommentContent({ content: "" })
-            })
+            <Button className="btn btn-primary" onClick={() => {
+                const copy = { ...commentContent }
+                copy.postId = postId
+                addComment(copy).then((returnedComment) => {
+                    // console.log(returnedComment)
+                    // navigate(`/post/${returnedComment.postId}`)
+                    getComments()
+                    setCommentContent({ content: "" })
+                })
 
-        }}>Submit</Button>
+            }}>Submit</Button>
         </div>
         <br />
     </>

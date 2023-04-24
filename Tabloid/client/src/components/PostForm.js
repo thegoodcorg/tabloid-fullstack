@@ -14,6 +14,7 @@ const PostForm = () => {
         ImageLocation: "",
         PublishDateTime: ""
     });
+    const [selectedImage, setSelectedImage] = useState(null);
     const navigate = useNavigate();
 
     return (
@@ -56,6 +57,30 @@ const PostForm = () => {
                         copy.ImageLocation = evt.target.value
                         setPost(copy);
                     }} />
+                or
+                <div>
+
+                    {selectedImage && (
+                        <div>
+                            <img
+                                alt="not found"
+                                width={"250px"}
+                                src={URL.createObjectURL(selectedImage)}
+                            />
+                            <br />
+                            <button onClick={() => setSelectedImage(null)}>Remove File</button>
+                        </div>
+                    )}
+
+                    <input
+                        type="file"
+                        name="myImage"
+                        onChange={(event) => {
+                            // console.log(event.target.files[0]);
+                            setSelectedImage(event.target.files[0]);
+                        }}
+                    />
+                </div>
 
                 <strong for="publishDate">Publication Date</strong>
                 <Input type="date" name="publishDate" id="publishDate" placeholder="Optional"
