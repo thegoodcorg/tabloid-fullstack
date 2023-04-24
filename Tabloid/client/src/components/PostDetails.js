@@ -62,7 +62,7 @@ export default function PostDetails() {
                     <CardSubtitle className="mb-2 text-muted"> Posted by: {post.userProfile?.displayName}</CardSubtitle>
                     <CardText className="m-4">{post.content}</CardText>
                     <CardSubtitle className="mb-2 text-muted"> Posted On: {new Date(post.publishDateTime).toLocaleString()}</CardSubtitle>
-
+                    {console.log(post)}
                     <p>{post.tags?.map(tag => {
                         return <li key={tag.id}>{tag.name} </li>;
                     })}
