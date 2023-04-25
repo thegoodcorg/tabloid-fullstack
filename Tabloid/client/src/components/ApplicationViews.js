@@ -18,6 +18,7 @@ import { EditComment } from "./EditComment";
 
 import PostForm from "./PostForm";
 import PostEdit from "./PostEdit";
+import PostApprove from "./PostApprove";
 
 export default function ApplicationViews({ isLoggedIn }) {
   return (
@@ -31,6 +32,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="post" element={<PostsDisplay />} />
+          <Route path="approvepost" element={<PostApprove />} />
           <Route path="/tag">
             <Route index element={<TagList />} />
             <Route path="add" element={<TagForm />} />

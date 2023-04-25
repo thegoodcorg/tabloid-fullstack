@@ -104,7 +104,6 @@ export const editPost = (post) => {
     });
 }
 
-
 export const addPostTag = (postTag) => {
     return getToken().then((token) => {
         return fetch(`${apiUrl}/addPostTags`, {

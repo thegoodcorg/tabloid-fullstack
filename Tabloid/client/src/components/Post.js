@@ -30,6 +30,7 @@ export default function Post({ post }) {
         <Card key={post.id} className="m-4">
             <CardBody>
                 {/* <img src={`${post.imageLocation}`} alt="header image" /> */}
+
                 <Link to={`/post/${post.id}`} >
                     <CardTitle tag='h5'>{post.title}</CardTitle>
                 </Link>
