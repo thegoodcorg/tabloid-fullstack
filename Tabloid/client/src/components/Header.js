@@ -46,11 +46,19 @@ export default function Header({ isLoggedIn, userProfile }) {
           </Nav>
           <Nav className="mr-auto" navbar>
             {isLoggedIn && isAdmin && (
-              <NavItem>
-                <NavLink tag={RRNavLink} to="/userprofiles">
-                  User Profiles
-                </NavLink>
-              </NavItem>
+              <>
+                <NavItem>
+                  <NavLink tag={RRNavLink} to="/userprofiles">
+                    User Profiles
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={RRNavLink} to="/approvepost">
+                    Post Manager
+                  </NavLink>
+                </NavItem>
+              </>
+
             )}
             <NavLink tag={RRNavLink} to="/tag">
               Tag Management

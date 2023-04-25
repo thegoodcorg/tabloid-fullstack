@@ -20,7 +20,7 @@ namespace Tabloid.Repositories
 				{
 					cmd.CommandText = @"SELECT p.Id, Title, Content, p.ImageLocation, p.CreateDateTime,
                                                              PublishDateTime, CategoryId, UserProfileId, IsApproved,
-                                                       up.DisplayName, c.Name, t.Name as TagName
+                                                       up.DisplayName, c.Name, t.Name as TagName, up.FirstName, up.LastName, up.Email
                                                 FROM POST as p
                                                 LEFT JOIN UserProfile as up ON p.UserProfileId = up.Id
                                                 LEFT JOIN Category as c ON p.CategoryId = c.Id
@@ -49,8 +49,11 @@ namespace Tabloid.Repositories
 								IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
 								UserProfile = new UserProfile()
 								{
-									DisplayName = DbUtils.GetString(reader, "DisplayName")
-								},
+                                    DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                                    FirstName = DbUtils.GetString(reader, "FirstName"),
+                                    LastName = DbUtils.GetString(reader, "LastName"),
+                                    Email = DbUtils.GetString(reader, "Email")
+                                },
 								Category = new Category()
 								{
 									Name = DbUtils.GetString(reader, "Name")
@@ -74,6 +77,7 @@ namespace Tabloid.Repositories
 				}
 			}
 		}
+
 		public Post GetPostById(int id)
 		{
 			using (var conn = Connection)
@@ -164,7 +168,6 @@ namespace Tabloid.Repositories
 			}
 		}
 
-
 		public List<Tag> GetTagsByPostId(int postId)
 		{
 
@@ -202,8 +205,6 @@ namespace Tabloid.Repositories
 			}
 		}
 
-
-
 		public void EditPost(Post post)
 		{
 			using (var conn = Connection)
@@ -216,7 +217,8 @@ namespace Tabloid.Repositories
                                             Content = @content,
                                             ImageLocation = @imageLocation, 
                                             PublishDateTime = @publishDateTime,                                           
-                                            CategoryId = @categoryId   
+                                            CategoryId = @categoryId,
+											IsApproved = @isApproved
                                          WHERE Id = @id";
 
 					DbUtils.AddParameter(cmd, "@id", post.Id);
@@ -225,8 +227,9 @@ namespace Tabloid.Repositories
 					DbUtils.AddParameter(cmd, "@imageLocation", post.ImageLocation);
 					DbUtils.AddParameter(cmd, "@publishDateTime", post.PublishDateTime);
 					DbUtils.AddParameter(cmd, "@categoryId", post.CategoryId);
+                    DbUtils.AddParameter(cmd, "@isApproved", post.IsApproved);
 
-					cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
 
 
 				}
