@@ -88,6 +88,7 @@ export default function Register() {
             type="password"
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
+          <Input type="checkbox"></Input>
         </FormGroup>
         <FormGroup>
           <Button>Register</Button>

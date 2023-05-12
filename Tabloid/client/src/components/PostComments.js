@@ -20,7 +20,8 @@ export const PostComments = ({ commentsOnPost, getComments }) => {
 
   return <><h5> Comments</h5> <br />
     {commentsOnPost.map(comment => {
-      return <React.Fragment key={comment.id}>        <u>{comment.profile.displayName}</u> says <br />
+      return <React.Fragment key={comment.id}>
+      <u>{comment.profile.displayName}</u> says <br />
         <li>
 
           {comment.content}<br />
